@@ -1,0 +1,386 @@
+{
+  "metadata": {
+    "random_seed": 42,
+    "k_qubit_features": 4,
+    "n_stability_folds": 5,
+    "variance_threshold": 1e-05,
+    "correlation_threshold": 0.9,
+    "mrmr_criterion": "MID",
+    "train_rows_evaluated": 55945,
+    "quantum_candidate_pool_size": 39,
+    "quantum_candidate_pool": [
+      "ackdat",
+      "ct_dst_ltm",
+      "ct_dst_sport_ltm",
+      "ct_dst_src_ltm",
+      "ct_flw_http_mthd",
+      "ct_ftp_cmd",
+      "ct_src_dport_ltm",
+      "ct_src_ltm",
+      "ct_srv_dst",
+      "ct_srv_src",
+      "ct_state_ttl",
+      "dbytes",
+      "dinpkt",
+      "djit",
+      "dload",
+      "dloss",
+      "dmean",
+      "dpkts",
+      "dtcpb",
+      "dttl",
+      "dur",
+      "dwin",
+      "is_ftp_login",
+      "is_sm_ips_ports",
+      "rate",
+      "response_body_len",
+      "sbytes",
+      "sinpkt",
+      "sjit",
+      "sload",
+      "sloss",
+      "smean",
+      "spkts",
+      "stcpb",
+      "sttl",
+      "swin",
+      "synack",
+      "tcprtt",
+      "trans_depth"
+    ]
+  },
+  "runs": {
+    "all_features": {
+      "excluded_features": [],
+      "selected_features": [
+        "sbytes",
+        "sload",
+        "sttl",
+        "smean"
+      ],
+      "mutual_information_scores": {
+        "sbytes": 0.365536,
+        "dbytes": 0.257809,
+        "smean": 0.255925,
+        "ct_state_ttl": 0.223367,
+        "dmean": 0.199056,
+        "dttl": 0.193487,
+        "sttl": 0.193305,
+        "sload": 0.191684,
+        "synack": 0.185529,
+        "tcprtt": 0.18506,
+        "dinpkt": 0.178871,
+        "rate": 0.173777,
+        "dur": 0.160786,
+        "ackdat": 0.153935,
+        "dpkts": 0.14288,
+        "dload": 0.136917,
+        "sinpkt": 0.122573,
+        "djit": 0.103706,
+        "sjit": 0.102585,
+        "ct_srv_dst": 0.095426,
+        "spkts": 0.089269,
+        "dloss": 0.072146,
+        "ct_srv_src": 0.066528,
+        "ct_dst_sport_ltm": 0.065855,
+        "sloss": 0.052237,
+        "response_body_len": 0.050756,
+        "ct_dst_src_ltm": 0.049459,
+        "ct_dst_ltm": 0.039106,
+        "ct_src_ltm": 0.027695,
+        "ct_src_dport_ltm": 0.027128,
+        "stcpb": 0.01988,
+        "swin": 0.016227,
+        "dwin": 0.009403,
+        "dtcpb": 0.008047,
+        "trans_depth": 0.006797,
+        "is_sm_ips_ports": 0.003293,
+        "ct_ftp_cmd": 0.002941,
+        "ct_flw_http_mthd": 0.000126,
+        "is_ftp_login": 0.0
+      },
+      "stability_selection_counts": {
+        "sbytes": 5,
+        "sload": 5,
+        "smean": 5,
+        "sttl": 5
+      },
+      "stability_selection_frequencies": {
+        "sbytes": 1.0,
+        "sload": 1.0,
+        "smean": 1.0,
+        "sttl": 1.0
+      },
+      "fold_selections": [
+        [
+          "sbytes",
+          "sload",
+          "sttl",
+          "smean"
+        ],
+        [
+          "sbytes",
+          "sload",
+          "sttl",
+          "smean"
+        ],
+        [
+          "sbytes",
+          "sload",
+          "sttl",
+          "smean"
+        ],
+        [
+          "sbytes",
+          "sload",
+          "sttl",
+          "smean"
+        ],
+        [
+          "sbytes",
+          "sload",
+          "sttl",
+          "smean"
+        ]
+      ],
+      "dropped_near_constant": [],
+      "dropped_correlated": {
+        "tcprtt": {
+          "dropped_in_favor_of": "synack",
+          "spearman_correlation": 0.98801,
+          "mi_candidate": 0.18506,
+          "mi_retained": 0.185529
+        },
+        "rate": {
+          "dropped_in_favor_of": "sload",
+          "spearman_correlation": 0.93818,
+          "mi_candidate": 0.173777,
+          "mi_retained": 0.191684
+        },
+        "ackdat": {
+          "dropped_in_favor_of": "synack",
+          "spearman_correlation": 0.9421,
+          "mi_candidate": 0.153935,
+          "mi_retained": 0.185529
+        },
+        "dpkts": {
+          "dropped_in_favor_of": "dbytes",
+          "spearman_correlation": 0.97203,
+          "mi_candidate": 0.14288,
+          "mi_retained": 0.257809
+        },
+        "dload": {
+          "dropped_in_favor_of": "dmean",
+          "spearman_correlation": 0.90928,
+          "mi_candidate": 0.136917,
+          "mi_retained": 0.199056
+        },
+        "sinpkt": {
+          "dropped_in_favor_of": "sload",
+          "spearman_correlation": 0.92439,
+          "mi_candidate": 0.122573,
+          "mi_retained": 0.191684
+        },
+        "dloss": {
+          "dropped_in_favor_of": "dbytes",
+          "spearman_correlation": 0.94119,
+          "mi_candidate": 0.072146,
+          "mi_retained": 0.257809
+        },
+        "sloss": {
+          "dropped_in_favor_of": "spkts",
+          "spearman_correlation": 0.94852,
+          "mi_candidate": 0.052237,
+          "mi_retained": 0.089269
+        },
+        "dwin": {
+          "dropped_in_favor_of": "swin",
+          "spearman_correlation": 0.94993,
+          "mi_candidate": 0.009403,
+          "mi_retained": 0.016227
+        },
+        "ct_flw_http_mthd": {
+          "dropped_in_favor_of": "trans_depth",
+          "spearman_correlation": 0.99932,
+          "mi_candidate": 0.000126,
+          "mi_retained": 0.006797
+        },
+        "is_ftp_login": {
+          "dropped_in_favor_of": "ct_ftp_cmd",
+          "spearman_correlation": 0.99809,
+          "mi_candidate": 0.0,
+          "mi_retained": 0.002941
+        }
+      },
+      "surviving_features_count": 28
+    },
+    "TTL_excluded": {
+      "excluded_features": [
+        "sttl",
+        "dttl",
+        "ct_state_ttl"
+      ],
+      "selected_features": [
+        "sbytes",
+        "sload",
+        "is_ftp_login",
+        "smean"
+      ],
+      "mutual_information_scores": {
+        "sbytes": 0.363503,
+        "dbytes": 0.261129,
+        "smean": 0.257006,
+        "dmean": 0.203114,
+        "sload": 0.192236,
+        "synack": 0.185332,
+        "tcprtt": 0.184108,
+        "dinpkt": 0.178417,
+        "rate": 0.17613,
+        "dur": 0.160129,
+        "ackdat": 0.154757,
+        "dpkts": 0.145958,
+        "dload": 0.138998,
+        "sinpkt": 0.121311,
+        "djit": 0.104189,
+        "sjit": 0.103058,
+        "ct_srv_dst": 0.096339,
+        "spkts": 0.087891,
+        "ct_dst_sport_ltm": 0.068383,
+        "ct_srv_src": 0.068183,
+        "dloss": 0.066457,
+        "sloss": 0.054873,
+        "response_body_len": 0.048436,
+        "ct_dst_src_ltm": 0.046148,
+        "ct_dst_ltm": 0.039321,
+        "ct_src_ltm": 0.028325,
+        "ct_src_dport_ltm": 0.026763,
+        "stcpb": 0.01773,
+        "dwin": 0.014654,
+        "swin": 0.014026,
+        "dtcpb": 0.008701,
+        "ct_flw_http_mthd": 0.008162,
+        "trans_depth": 0.006275,
+        "is_sm_ips_ports": 0.003572,
+        "ct_ftp_cmd": 0.0,
+        "is_ftp_login": 0.0
+      },
+      "stability_selection_counts": {
+        "sbytes": 5,
+        "sload": 5,
+        "smean": 5,
+        "ct_ftp_cmd": 3,
+        "is_ftp_login": 2
+      },
+      "stability_selection_frequencies": {
+        "sbytes": 1.0,
+        "sload": 1.0,
+        "smean": 1.0,
+        "ct_ftp_cmd": 0.6,
+        "is_ftp_login": 0.4
+      },
+      "fold_selections": [
+        [
+          "sbytes",
+          "sload",
+          "ct_ftp_cmd",
+          "smean"
+        ],
+        [
+          "sbytes",
+          "sload",
+          "ct_ftp_cmd",
+          "smean"
+        ],
+        [
+          "sbytes",
+          "sload",
+          "is_ftp_login",
+          "smean"
+        ],
+        [
+          "sbytes",
+          "sload",
+          "ct_ftp_cmd",
+          "smean"
+        ],
+        [
+          "sbytes",
+          "sload",
+          "is_ftp_login",
+          "smean"
+        ]
+      ],
+      "dropped_near_constant": [],
+      "dropped_correlated": {
+        "tcprtt": {
+          "dropped_in_favor_of": "synack",
+          "spearman_correlation": 0.98801,
+          "mi_candidate": 0.184108,
+          "mi_retained": 0.185332
+        },
+        "rate": {
+          "dropped_in_favor_of": "sload",
+          "spearman_correlation": 0.93818,
+          "mi_candidate": 0.17613,
+          "mi_retained": 0.192236
+        },
+        "ackdat": {
+          "dropped_in_favor_of": "synack",
+          "spearman_correlation": 0.9421,
+          "mi_candidate": 0.154757,
+          "mi_retained": 0.185332
+        },
+        "dpkts": {
+          "dropped_in_favor_of": "dbytes",
+          "spearman_correlation": 0.97203,
+          "mi_candidate": 0.145958,
+          "mi_retained": 0.261129
+        },
+        "dload": {
+          "dropped_in_favor_of": "dmean",
+          "spearman_correlation": 0.90928,
+          "mi_candidate": 0.138998,
+          "mi_retained": 0.203114
+        },
+        "sinpkt": {
+          "dropped_in_favor_of": "sload",
+          "spearman_correlation": 0.92439,
+          "mi_candidate": 0.121311,
+          "mi_retained": 0.192236
+        },
+        "dloss": {
+          "dropped_in_favor_of": "dbytes",
+          "spearman_correlation": 0.94119,
+          "mi_candidate": 0.066457,
+          "mi_retained": 0.261129
+        },
+        "sloss": {
+          "dropped_in_favor_of": "spkts",
+          "spearman_correlation": 0.94852,
+          "mi_candidate": 0.054873,
+          "mi_retained": 0.087891
+        },
+        "swin": {
+          "dropped_in_favor_of": "dwin",
+          "spearman_correlation": 0.94993,
+          "mi_candidate": 0.014026,
+          "mi_retained": 0.014654
+        },
+        "trans_depth": {
+          "dropped_in_favor_of": "ct_flw_http_mthd",
+          "spearman_correlation": 0.99932,
+          "mi_candidate": 0.006275,
+          "mi_retained": 0.008162
+        },
+        "ct_ftp_cmd": {
+          "dropped_in_favor_of": "is_ftp_login",
+          "spearman_correlation": 0.99809,
+          "mi_candidate": 0.0,
+          "mi_retained": 0.0
+        }
+      },
+      "surviving_features_count": 25
+    }
+  }
+}

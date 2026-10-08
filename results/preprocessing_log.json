@@ -1,0 +1,9 @@
+{
+  "original_train_rows": 82332,
+  "removed_duplicate_rows": 26387,
+  "final_train_rows": 55945,
+  "duplicate_removal_percentage": 32.05,
+  "deduplication_subset_columns_count": 44,
+  "test_rows_unmodified": null,
+  "note": "Deduplication applied strictly to TRAIN partition. Test set left untouched."
+}
