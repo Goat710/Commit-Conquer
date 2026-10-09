@@ -1,0 +1,112 @@
+{
+  "protocol_version": "Stage 7b v2",
+  "project": "Quantum CyberShield — Hybrid Quantum-Classical Threat Detection",
+  "hackathon": "Qiskit Fall Fest 2026",
+  "baseline_commit": "b6033ec",
+  "objective": "Rigorously validate the exact statevector quantum kernel pipeline, scale training learning curves up to N=4000, and perform fair paired statistical comparisons against classical SVM and Random Forest.",
+  "experimental_configuration": {
+    "random_seeds": [42, 100, 2024, 777, 999],
+    "training_sizes": [100, 500, 1000, 2000, 4000],
+    "test_subset_size": 20000,
+    "official_full_test_size": 175341,
+    "features": ["sbytes", "sload", "sttl", "smean"],
+    "quantum_feature_map": {
+      "type": "ZZFeatureMap",
+      "n_qubits": 4,
+      "reps": 2,
+      "entanglement": "linear",
+      "hilbert_dimension": 16
+    },
+    "quantum_scaling": "MinMaxScaler(feature_range=(0, pi)) fitted on X_train only",
+    "classical_svm_scaling": "StandardScaler fitted on X_train only",
+    "classical_rf_scaling": "None (tree invariant)"
+  },
+  "partition_discipline": {
+    "data_sources": {
+      "training_pool": "RAW_TRAIN_CSV (82,332 rows, attack prevalence 55.06%)",
+      "test_source": "RAW_TEST_CSV (175,341 rows, attack prevalence 68.06%)"
+    },
+    "partitions": {
+      "training": {
+        "sizes": [100, 500, 1000, 2000, 4000],
+        "purpose": "Model training and support vector fitting",
+        "source": "RAW_TRAIN_CSV stratified subsample per seed"
+      },
+      "tuning": {
+        "size": 1000,
+        "purpose": "Hyperparameter tuning (SVM C/gamma, QSVC C)",
+        "source": "RAW_TRAIN_CSV, strictly disjoint from training pool, fixed across seeds"
+      },
+      "calibration": {
+        "size": 2000,
+        "purpose": "Platt sigmoid calibrator fitting",
+        "source": "RAW_TRAIN_CSV, strictly disjoint from training and tuning partitions"
+      },
+      "evaluation_subset": {
+        "size": 20000,
+        "purpose": "Paired model evaluation, learning curve scoring, and statistical tests",
+        "source": "RAW_TEST_CSV stratified subsample (fixed seed 42)"
+      },
+      "evaluation_full": {
+        "size": 175341,
+        "purpose": "Full official-test classical reference (separate from subset experiments)",
+        "source": "RAW_TEST_CSV complete dataset"
+      }
+    },
+    "disjointness_invariant": "Train indices intersection with Tune indices is empty; Train indices intersection with Cal indices is empty; Tune indices intersection with Cal indices is empty; Train/Tune/Cal datasets are completely isolated from Test datasets.",
+    "leakage_prevention": "All transformations, scalers, and hyperparameter selections are fitted exclusively on the relevant training/tuning partitions. Test sets are never referenced during preprocessing, model training, tuning, or calibration."
+  },
+  "models": {
+    "qsvc": {
+      "classifier": "sklearn.svm.SVC(kernel='precomputed')",
+      "kernel": "Exact Statevector Fidelity Kernel: K(A, B) = |states_A.conj() @ states_B.T|^2",
+      "hyperparameter_search": {"C": [0.01, 0.1, 1.0, 10.0, 100.0]}
+    },
+    "svm": {
+      "classifier": "sklearn.svm.SVC(kernel='rbf')",
+      "hyperparameter_search": {
+        "C": [0.01, 0.1, 1.0, 10.0, 100.0],
+        "gamma": ["scale", "auto", 0.01, 0.1, 1.0]
+      }
+    },
+    "random_forest": {
+      "classifier": "sklearn.ensemble.RandomForestClassifier",
+      "hyperparameter_search": {
+        "n_estimators": [50, 100, 200],
+        "max_depth": [5, 10, 15, null]
+      }
+    }
+  },
+  "metrics_and_statistical_testing": {
+    "classification_metrics": ["accuracy", "precision", "recall", "f1", "roc_auc", "false_positive_rate"],
+    "computational_metrics": ["fit_time_s", "inference_time_s", "kernel_embedding_time_s", "kernel_matmul_time_s", "peak_memory_mb"],
+    "paired_testing_protocol": {
+      "test_set": "Identical N=20,000 held-out samples for all models",
+      "bootstrap": {
+        "n_resamples": 1000,
+        "seed": 42,
+        "confidence_level": 0.95
+      },
+      "mcnemar_test": {
+        "description": "Contingency table of paired classification errors between models",
+        "continuity_correction": true
+      },
+      "multiple_testing_correction": "Holm-Bonferroni correction across the 3 pairwise model comparisons",
+      "practical_equivalence_margin": 0.01,
+      "interpretation_rule": "Distinguish statistical significance (p < alpha) from practical significance (|delta| > 0.01). If 95% CI of difference falls entirely within [-0.01, +0.01], conclude practical equivalence."
+    }
+  },
+  "calibration_audit_protocol": {
+    "method": "Platt sigmoid mapping: P(Y=1|s) = 1 / (1 + exp(A * s + B))",
+    "calibration_partition_size": 2000,
+    "metrics": ["brier_score_loss", "expected_calibration_error", "reliability_diagram"]
+  },
+  "disagreement_audit_protocol": {
+    "metrics": ["pairwise_agreement_rate", "unanimous_agreement_rate", "disagreement_count", "error_overlap_matrix", "conditional_accuracy_on_disagreements"]
+  },
+  "reporting_rules": {
+    "prohibition_on_unjustified_claims": "Never claim quantum advantage unless supported by rigorous empirical data with statistical and practical significance.",
+    "separation_of_test_scales": "Never compare quantum subset results directly against classical full-test results as if they were equivalent.",
+    "runtime_and_scaling_transparency": "Explicitly report quantum kernel embedding and inference overheads compared to classical models."
+  }
+}

@@ -1,0 +1,171 @@
+{
+  "step": "Stage 7b Step 8 \u2014 Disagreement and Error Overlap Analysis",
+  "sample_size": 20000,
+  "source_file": "results\\predictions_v2.csv",
+  "disclaimer": "Do not claim models complement one another merely because they disagree. Disagreement analysis measures output divergence and error distributions; it does NOT demonstrate synergy or ensemble advantage. In fact, majority voting with QSVC and SVM degrades overall performance relative to Random Forest alone because the weaker models outvote the superior classical baseline.",
+  "pairwise_agreements": {
+    "SVM vs RF": {
+      "model_A": "svm",
+      "model_B": "rf",
+      "agreement_count": 17376,
+      "agreement_rate": 0.8688,
+      "disagreement_count": 2624,
+      "disagreement_rate": 0.1312,
+      "conditional_on_disagreement": {
+        "total_disagreements": 2624,
+        "svm_correct_count": 1095,
+        "svm_correct_rate": 0.4173,
+        "rf_correct_count": 1529,
+        "rf_correct_rate": 0.5827
+      }
+    },
+    "SVM vs QSVC": {
+      "model_A": "svm",
+      "model_B": "qsvc",
+      "agreement_count": 18124,
+      "agreement_rate": 0.9062,
+      "disagreement_count": 1876,
+      "disagreement_rate": 0.0938,
+      "conditional_on_disagreement": {
+        "total_disagreements": 1876,
+        "svm_correct_count": 1307,
+        "svm_correct_rate": 0.6967,
+        "qsvc_correct_count": 569,
+        "qsvc_correct_rate": 0.3033
+      }
+    },
+    "RF vs QSVC": {
+      "model_A": "rf",
+      "model_B": "qsvc",
+      "agreement_count": 16904,
+      "agreement_rate": 0.8452,
+      "disagreement_count": 3096,
+      "disagreement_rate": 0.1548,
+      "conditional_on_disagreement": {
+        "total_disagreements": 3096,
+        "rf_correct_count": 2134,
+        "rf_correct_rate": 0.6893,
+        "qsvc_correct_count": 962,
+        "qsvc_correct_rate": 0.3107
+      }
+    }
+  },
+  "three_way_agreements": {
+    "total_samples": 20000,
+    "unanimous_agreement": {
+      "count": 16202,
+      "rate": 0.8101,
+      "all_predicted_0_count": 6353,
+      "all_predicted_1_count": 9849,
+      "unanimous_correct_count": 15327,
+      "unanimous_correct_rate": 0.946,
+      "unanimous_incorrect_count": 875,
+      "unanimous_incorrect_rate": 0.054
+    },
+    "three_way_disagreement": {
+      "count": 3798,
+      "rate": 0.1899
+    }
+  },
+  "conditional_correctness_on_disagreements": {
+    "disagreement_subset_size": 3798,
+    "model_performance_on_disagreements": {
+      "qsvc": {
+        "correct_count": 1305,
+        "accuracy_on_disagreement": 0.3436,
+        "error_count": 2493
+      },
+      "svm": {
+        "correct_count": 2043,
+        "accuracy_on_disagreement": 0.5379,
+        "error_count": 1755
+      },
+      "rf": {
+        "correct_count": 2477,
+        "accuracy_on_disagreement": 0.6522,
+        "error_count": 1321
+      }
+    },
+    "relative_ranking_on_disagreements": [
+      {
+        "rank": 1,
+        "model": "rf",
+        "accuracy": 0.6522
+      },
+      {
+        "rank": 2,
+        "model": "svm",
+        "accuracy": 0.5379
+      },
+      {
+        "rank": 3,
+        "model": "qsvc",
+        "accuracy": 0.3436
+      }
+    ]
+  },
+  "error_overlap_matrix": {
+    "total_samples": 20000,
+    "partition_verification_sum": 20000,
+    "partition_is_exact": true,
+    "total_errors": {
+      "qsvc": 3368,
+      "svm": 2630,
+      "rf": 2196
+    },
+    "overall_error_coverage": {
+      "all_three_correct": 15327,
+      "all_three_correct_rate": 0.7663,
+      "all_three_incorrect": 875,
+      "all_three_incorrect_rate": 0.0437,
+      "at_least_one_incorrect": 4673,
+      "at_least_one_incorrect_rate": 0.2336
+    },
+    "disjoint_error_breakdown": {
+      "unique_errors_single_model": {
+        "qsvc_only_failed": 948,
+        "svm_only_failed": 343,
+        "rf_only_failed": 736
+      },
+      "shared_errors_two_models": {
+        "qsvc_and_svm_failed_rf_alone_correct": 1186,
+        "qsvc_and_rf_failed_svm_alone_correct": 359,
+        "svm_and_rf_failed_qsvc_alone_correct": 226
+      },
+      "shared_errors_all_three_models": 875
+    },
+    "pairwise_error_overlaps": {
+      "qsvc_and_svm_both_wrong": 2061,
+      "qsvc_and_rf_both_wrong": 1234,
+      "svm_and_rf_both_wrong": 1101
+    },
+    "exclusive_correctness_summary": {
+      "rf_alone_correct": 1186,
+      "svm_alone_correct": 359,
+      "qsvc_alone_correct": 226,
+      "takeaway": "When two models fail and one succeeds, RF succeeds alone on 1186 flows, SVM succeeds alone on 359 flows, while QSVC succeeds alone on only 226 flows. RF is alone in its correctness 5.2x more often than QSVC."
+    }
+  },
+  "majority_vote_ensemble_evaluation": {
+    "majority_vote_accuracy": 0.8677,
+    "majority_vote_correct_count": 17354,
+    "single_model_accuracies": {
+      "rf": 0.8902,
+      "svm": 0.8685,
+      "qsvc": 0.8316
+    },
+    "majority_vote_vs_best_single_model": {
+      "best_single_model": "rf",
+      "delta_accuracy_vs_rf": -0.0225,
+      "net_error_change_vs_rf": 450,
+      "interpretation": "Majority voting degrades accuracy relative to Random Forest alone by 2.25% (450 additional errors). Because QSVC and SVM share errors that outvote the correct RF prediction (1,186 flows), combining models does NOT provide an ensemble benefit."
+    }
+  },
+  "key_takeaways": [
+    "High 3-way unanimous agreement (81.01% of all test flows).",
+    "On the 18.99% disagreement subset, Random Forest achieves 65.22% accuracy, Classical SVM achieves 53.79%, while QSVC achieves only 34.36%.",
+    "Random Forest is solely correct on 1,186 flows where both SVM and QSVC fail, whereas QSVC is solely correct on only 226 flows.",
+    "An unweighted majority voting ensemble achieves 86.77% accuracy, performing 2.25 percentage points worse than Random Forest alone (89.02%).",
+    "Disagreement is primarily driven by QSVC underperformance, not complementary niche expertise. There is no evidence of quantum ensemble synergy."
+  ]
+}

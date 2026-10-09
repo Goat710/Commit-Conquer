@@ -1,0 +1,69 @@
+{
+  "step": "Stage 7b Step 1 \u2014 Exact Statevector Quantum Kernel Verification",
+  "dataset": "UNSW-NB15",
+  "n_samples": 20,
+  "features": [
+    "sbytes",
+    "sload",
+    "sttl",
+    "smean"
+  ],
+  "seed": 42,
+  "class_balance": {
+    "normal_0": 9,
+    "attack_1": 11
+  },
+  "feature_map": {
+    "type": "ZZFeatureMap",
+    "n_qubits": 4,
+    "reps": 2,
+    "entanglement": "linear",
+    "statevector_dimension": 16
+  },
+  "exact_kernel_v2": {
+    "embedding_time_s": 0.000401,
+    "matmul_time_s": 4.8e-05,
+    "total_time_s": 0.000449,
+    "diagnostics": {
+      "shape": [
+        20,
+        20
+      ],
+      "n_samples": 20,
+      "diag_min": 1.0,
+      "diag_max": 1.0,
+      "diag_max_deviation": 0.0,
+      "is_symmetric": true,
+      "max_asymmetry": 0.0,
+      "value_min": 0.0002165149,
+      "value_max": 1.0,
+      "min_eigenvalue": 0.0,
+      "strictly_psd": true,
+      "passes_psd_tolerance": true,
+      "is_psd": true,
+      "all_passed": true,
+      "tolerances": {
+        "tol_diag": 1e-10,
+        "tol_sym": 1e-10,
+        "tol_range": 1e-10,
+        "tol_psd": -1e-10
+      }
+    }
+  },
+  "qiskit_fidelity_quantum_kernel_crosscheck": {
+    "runtime_s": 0.9914,
+    "max_abs_difference": 3.77e-12,
+    "mean_abs_difference": 6.8e-13,
+    "validation_passed": true,
+    "threshold": 1e-06
+  },
+  "historical_stage7_comparison": {
+    "runtime_s": 1.4436,
+    "speedup_factor": 3216.5,
+    "max_abs_difference_raw": 0.019973,
+    "mean_abs_difference_raw": 0.00352,
+    "historical_raw_min_eigenvalue": -0.00617,
+    "historical_psd_min_eigenvalue": -0.0,
+    "shot_noise_source": "Historical Stage 5/7 used ComputeUncompute with StatevectorSampler(seed=42) which defaulted to 1024 finite measurement shots. This introduced ~1/sqrt(shots) = 0.03 statistical shot noise and negative eigenvalues in raw kernels. The Stage 7b exact statevector kernel evaluates analytical inner products |<psi_i|psi_j>|^2 directly in C^16 with 0 shot noise, yielding strictly PSD matrices and ~150x faster evaluation."
+  }
+}

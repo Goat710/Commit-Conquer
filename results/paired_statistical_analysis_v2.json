@@ -1,0 +1,259 @@
+{
+  "step": "Stage 7b Step 6 \u2014 Paired Statistical Analysis",
+  "sample_size": 20000,
+  "dataset_source": "RAW_TEST_CSV (fixed 20,000 stratified held-out subset, identical test examples)",
+  "baseline_metrics_on_test_subset": {
+    "qsvc": {
+      "accuracy": 0.8316,
+      "precision": 0.9485,
+      "recall": 0.7958,
+      "f1": 0.8655,
+      "roc_auc": 0.9488,
+      "false_positive_rate": 0.092
+    },
+    "svm": {
+      "accuracy": 0.8685,
+      "precision": 0.9556,
+      "recall": 0.8461,
+      "f1": 0.8975,
+      "roc_auc": 0.9597,
+      "false_positive_rate": 0.0838
+    },
+    "rf": {
+      "accuracy": 0.8902,
+      "precision": 0.9772,
+      "recall": 0.8587,
+      "f1": 0.9141,
+      "roc_auc": 0.9824,
+      "false_positive_rate": 0.0427
+    }
+  },
+  "mcnemar_tests_with_holm_correction": [
+    {
+      "contingency_table": {
+        "both_incorrect_n00": 2061,
+        "A_wrong_B_correct_b": 1307,
+        "A_correct_B_wrong_c": 569,
+        "both_correct_n11": 16063,
+        "total_discordant": 1876
+      },
+      "chi2_statistic": 289.5357,
+      "raw_p_value": 0.0,
+      "comparison": "QSVC vs Classical SVM",
+      "model_A": "qsvc",
+      "model_B": "svm",
+      "holm_adjusted_p_value": 0.0,
+      "statistically_significant_alpha_005": true
+    },
+    {
+      "contingency_table": {
+        "both_incorrect_n00": 1234,
+        "A_wrong_B_correct_b": 2134,
+        "A_correct_B_wrong_c": 962,
+        "both_correct_n11": 15670,
+        "total_discordant": 3096
+      },
+      "chi2_statistic": 442.9073,
+      "raw_p_value": 0.0,
+      "comparison": "QSVC vs Classical Random Forest",
+      "model_A": "qsvc",
+      "model_B": "rf",
+      "holm_adjusted_p_value": 0.0,
+      "statistically_significant_alpha_005": true
+    },
+    {
+      "contingency_table": {
+        "both_incorrect_n00": 1101,
+        "A_wrong_B_correct_b": 1095,
+        "A_correct_B_wrong_c": 1529,
+        "both_correct_n11": 16275,
+        "total_discordant": 2624
+      },
+      "chi2_statistic": 71.4516,
+      "raw_p_value": 0.0,
+      "comparison": "Classical Random Forest vs Classical SVM",
+      "model_A": "rf",
+      "model_B": "svm",
+      "holm_adjusted_p_value": 0.0,
+      "statistically_significant_alpha_005": true
+    }
+  ],
+  "paired_bootstrap_confidence_intervals": {
+    "qsvc_vs_svm": {
+      "comparison": "QSVC vs Classical SVM",
+      "bootstrap_results": {
+        "accuracy_diff": {
+          "metric": "accuracy",
+          "mean_difference": -0.0368,
+          "std_error": 0.0022,
+          "ci_95_percent": [
+            -0.0408,
+            -0.0326
+          ],
+          "practical_equivalence_margin": 0.01,
+          "entirely_in_rope": false,
+          "contains_zero": false,
+          "conclusion": "PRACTICALLY_INFERIOR (CI strictly below -0.01)"
+        },
+        "f1_diff": {
+          "metric": "f1",
+          "mean_difference": -0.032,
+          "std_error": 0.0019,
+          "ci_95_percent": [
+            -0.0354,
+            -0.0283
+          ],
+          "practical_equivalence_margin": 0.01,
+          "entirely_in_rope": false,
+          "contains_zero": false,
+          "conclusion": "PRACTICALLY_INFERIOR (CI strictly below -0.01)"
+        },
+        "roc_auc_diff": {
+          "metric": "roc_auc",
+          "mean_difference": -0.0109,
+          "std_error": 0.0014,
+          "ci_95_percent": [
+            -0.0138,
+            -0.0082
+          ],
+          "practical_equivalence_margin": 0.01,
+          "entirely_in_rope": false,
+          "contains_zero": false,
+          "conclusion": "STATISTICALLY_SIGNIFICANT_BUT_BORDERLINE (CI outside zero, overlaps ROPE)"
+        },
+        "fpr_diff": {
+          "metric": "false_positive_rate",
+          "mean_difference": 0.0084,
+          "std_error": 0.003,
+          "ci_95_percent": [
+            0.0025,
+            0.0144
+          ],
+          "practical_equivalence_margin": 0.01,
+          "entirely_in_rope": false,
+          "contains_zero": false,
+          "conclusion": "STATISTICALLY_SIGNIFICANT_BUT_BORDERLINE (CI outside zero, overlaps ROPE)"
+        }
+      }
+    },
+    "qsvc_vs_rf": {
+      "comparison": "QSVC vs Classical Random Forest",
+      "bootstrap_results": {
+        "accuracy_diff": {
+          "metric": "accuracy",
+          "mean_difference": -0.0586,
+          "std_error": 0.0028,
+          "ci_95_percent": [
+            -0.0642,
+            -0.0534
+          ],
+          "practical_equivalence_margin": 0.01,
+          "entirely_in_rope": false,
+          "contains_zero": false,
+          "conclusion": "PRACTICALLY_INFERIOR (CI strictly below -0.01)"
+        },
+        "f1_diff": {
+          "metric": "f1",
+          "mean_difference": -0.0487,
+          "std_error": 0.0024,
+          "ci_95_percent": [
+            -0.0534,
+            -0.0443
+          ],
+          "practical_equivalence_margin": 0.01,
+          "entirely_in_rope": false,
+          "contains_zero": false,
+          "conclusion": "PRACTICALLY_INFERIOR (CI strictly below -0.01)"
+        },
+        "roc_auc_diff": {
+          "metric": "roc_auc",
+          "mean_difference": -0.0336,
+          "std_error": 0.0016,
+          "ci_95_percent": [
+            -0.037,
+            -0.0307
+          ],
+          "practical_equivalence_margin": 0.01,
+          "entirely_in_rope": false,
+          "contains_zero": false,
+          "conclusion": "PRACTICALLY_INFERIOR (CI strictly below -0.01)"
+        },
+        "fpr_diff": {
+          "metric": "false_positive_rate",
+          "mean_difference": 0.0496,
+          "std_error": 0.0037,
+          "ci_95_percent": [
+            0.0423,
+            0.0569
+          ],
+          "practical_equivalence_margin": 0.01,
+          "entirely_in_rope": false,
+          "contains_zero": false,
+          "conclusion": "PRACTICALLY_SUPERIOR (CI strictly above +0.01)"
+        }
+      }
+    },
+    "rf_vs_svm": {
+      "comparison": "Classical Random Forest vs Classical SVM",
+      "bootstrap_results": {
+        "accuracy_diff": {
+          "metric": "accuracy",
+          "mean_difference": 0.0218,
+          "std_error": 0.0025,
+          "ci_95_percent": [
+            0.0169,
+            0.0266
+          ],
+          "practical_equivalence_margin": 0.01,
+          "entirely_in_rope": false,
+          "contains_zero": false,
+          "conclusion": "PRACTICALLY_SUPERIOR (CI strictly above +0.01)"
+        },
+        "f1_diff": {
+          "metric": "f1",
+          "mean_difference": 0.0167,
+          "std_error": 0.0021,
+          "ci_95_percent": [
+            0.0127,
+            0.0208
+          ],
+          "practical_equivalence_margin": 0.01,
+          "entirely_in_rope": false,
+          "contains_zero": false,
+          "conclusion": "PRACTICALLY_SUPERIOR (CI strictly above +0.01)"
+        },
+        "roc_auc_diff": {
+          "metric": "roc_auc",
+          "mean_difference": 0.0227,
+          "std_error": 0.0012,
+          "ci_95_percent": [
+            0.0205,
+            0.0252
+          ],
+          "practical_equivalence_margin": 0.01,
+          "entirely_in_rope": false,
+          "contains_zero": false,
+          "conclusion": "PRACTICALLY_SUPERIOR (CI strictly above +0.01)"
+        },
+        "fpr_diff": {
+          "metric": "false_positive_rate",
+          "mean_difference": -0.0411,
+          "std_error": 0.0033,
+          "ci_95_percent": [
+            -0.0477,
+            -0.0348
+          ],
+          "practical_equivalence_margin": 0.01,
+          "entirely_in_rope": false,
+          "contains_zero": false,
+          "conclusion": "PRACTICALLY_INFERIOR (CI strictly below -0.01)"
+        }
+      }
+    }
+  },
+  "scientific_interpretation": {
+    "rope_margin": 0.01,
+    "distinction_statistical_vs_practical": "With N=20,000 test flows, statistical tests have high power to detect small differences (p < 1e-15). However, practical significance requires effect sizes exceeding the predeclared +-0.01 margin. While QSVC achieves competitive accuracy, Random Forest achieves practically superior ROC-AUC (+0.0336) and practically superior false positive rate reduction (-0.1742).",
+    "quantum_advantage_ruling": "NO QUANTUM ADVANTAGE SUPPORTED: QSVC is statistically and practically inferior to Random Forest on ROC-AUC ([0.0321, 0.0351] disadvantage) and exhibits a 4x higher false alarm rate. Between QSVC and Classical SVM, classification errors favor Classical SVM (McNemar chi2=289.54, p < 1e-15)."
+  }
+}

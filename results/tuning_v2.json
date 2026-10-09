@@ -1,0 +1,265 @@
+{
+  "step": "Stage 7b Step 4 \u2014 Precomputed-Kernel Classifier Hyperparameter Tuning",
+  "protocol": {
+    "tuning_partition_size": 1000,
+    "tuning_source": "RAW_TRAIN_CSV (disjoint from model training, calibration, and test partitions)",
+    "test_leakage_audit": "PASS (zero test set labels or features accessed during tuning)",
+    "training_sample_size": 500,
+    "seeds_evaluated": [
+      42,
+      100,
+      2024,
+      777,
+      999
+    ],
+    "features": [
+      "sbytes",
+      "sload",
+      "sttl",
+      "smean"
+    ]
+  },
+  "qsvc_tuning": {
+    "grid": [
+      0.01,
+      0.1,
+      1.0,
+      10.0,
+      100.0
+    ],
+    "summary_across_seeds": {
+      "C_0.01": {
+        "C": 0.01,
+        "f1_mean": 0.804,
+        "f1_std": 0.0049,
+        "accuracy_mean": 0.7322,
+        "accuracy_std": 0.0088,
+        "roc_auc_mean": 0.8435,
+        "roc_auc_std": 0.0159,
+        "fit_time_mean_s": 0.00854,
+        "infer_time_mean_s": 0.01479
+      },
+      "C_0.1": {
+        "C": 0.1,
+        "f1_mean": 0.8191,
+        "f1_std": 0.0063,
+        "accuracy_mean": 0.7668,
+        "accuracy_std": 0.0106,
+        "roc_auc_mean": 0.8828,
+        "roc_auc_std": 0.0059,
+        "fit_time_mean_s": 0.00645,
+        "infer_time_mean_s": 0.0112
+      },
+      "C_1.0": {
+        "C": 1.0,
+        "f1_mean": 0.8194,
+        "f1_std": 0.0154,
+        "accuracy_mean": 0.7836,
+        "accuracy_std": 0.0097,
+        "roc_auc_mean": 0.9014,
+        "roc_auc_std": 0.0043,
+        "fit_time_mean_s": 0.00621,
+        "infer_time_mean_s": 0.01006
+      },
+      "C_10.0": {
+        "C": 10.0,
+        "f1_mean": 0.83,
+        "f1_std": 0.0175,
+        "accuracy_mean": 0.8068,
+        "accuracy_std": 0.0226,
+        "roc_auc_mean": 0.8953,
+        "roc_auc_std": 0.0072,
+        "fit_time_mean_s": 0.00736,
+        "infer_time_mean_s": 0.00918
+      },
+      "C_100.0": {
+        "C": 100.0,
+        "f1_mean": 0.8259,
+        "f1_std": 0.0085,
+        "accuracy_mean": 0.805,
+        "accuracy_std": 0.0178,
+        "roc_auc_mean": 0.888,
+        "roc_auc_std": 0.0078,
+        "fit_time_mean_s": 0.01505,
+        "infer_time_mean_s": 0.01004
+      }
+    },
+    "best_hyperparameter": {
+      "key": "C_10.0",
+      "C": 10.0,
+      "validation_f1_mean": 0.83,
+      "validation_roc_auc_mean": 0.8953
+    }
+  },
+  "classical_svm_tuning": {
+    "summary_across_seeds": {
+      "C_0.1_gamma_scale": {
+        "params": {
+          "C": 0.1,
+          "gamma": "scale"
+        },
+        "f1_mean": 0.7859,
+        "f1_std": 0.0063,
+        "accuracy_mean": 0.7472,
+        "accuracy_std": 0.0118,
+        "roc_auc_mean": 0.8704,
+        "roc_auc_std": 0.0051
+      },
+      "C_1.0_gamma_scale": {
+        "params": {
+          "C": 1.0,
+          "gamma": "scale"
+        },
+        "f1_mean": 0.7886,
+        "f1_std": 0.012,
+        "accuracy_mean": 0.751,
+        "accuracy_std": 0.0141,
+        "roc_auc_mean": 0.8751,
+        "roc_auc_std": 0.0124
+      },
+      "C_10.0_gamma_scale": {
+        "params": {
+          "C": 10.0,
+          "gamma": "scale"
+        },
+        "f1_mean": 0.8132,
+        "f1_std": 0.0174,
+        "accuracy_mean": 0.7816,
+        "accuracy_std": 0.0141,
+        "roc_auc_mean": 0.8902,
+        "roc_auc_std": 0.0165
+      },
+      "C_10.0_gamma_0.1": {
+        "params": {
+          "C": 10.0,
+          "gamma": 0.1
+        },
+        "f1_mean": 0.79,
+        "f1_std": 0.0116,
+        "accuracy_mean": 0.7536,
+        "accuracy_std": 0.0157,
+        "roc_auc_mean": 0.8726,
+        "roc_auc_std": 0.0117
+      },
+      "C_100.0_gamma_scale": {
+        "params": {
+          "C": 100.0,
+          "gamma": "scale"
+        },
+        "f1_mean": 0.8274,
+        "f1_std": 0.0176,
+        "accuracy_mean": 0.804,
+        "accuracy_std": 0.0274,
+        "roc_auc_mean": 0.8903,
+        "roc_auc_std": 0.0174
+      }
+    },
+    "best_hyperparameter": {
+      "key": "C_100.0_gamma_scale",
+      "params": {
+        "C": 100.0,
+        "gamma": "scale"
+      },
+      "validation_f1_mean": 0.8274
+    }
+  },
+  "classical_rf_tuning": {
+    "summary_across_seeds": {
+      "trees_50_depth_10": {
+        "params": {
+          "n_estimators": 50,
+          "max_depth": 10
+        },
+        "f1_mean": 0.8891,
+        "f1_std": 0.0079,
+        "accuracy_mean": 0.8786,
+        "accuracy_std": 0.0095,
+        "roc_auc_mean": 0.957,
+        "roc_auc_std": 0.003
+      },
+      "trees_100_depth_10": {
+        "params": {
+          "n_estimators": 100,
+          "max_depth": 10
+        },
+        "f1_mean": 0.8908,
+        "f1_std": 0.0089,
+        "accuracy_mean": 0.8804,
+        "accuracy_std": 0.0111,
+        "roc_auc_mean": 0.9583,
+        "roc_auc_std": 0.0029
+      },
+      "trees_100_depth_15": {
+        "params": {
+          "n_estimators": 100,
+          "max_depth": 15
+        },
+        "f1_mean": 0.8868,
+        "f1_std": 0.005,
+        "accuracy_mean": 0.8756,
+        "accuracy_std": 0.0064,
+        "roc_auc_mean": 0.9572,
+        "roc_auc_std": 0.0027
+      },
+      "trees_100_depth_None": {
+        "params": {
+          "n_estimators": 100,
+          "max_depth": null
+        },
+        "f1_mean": 0.8854,
+        "f1_std": 0.006,
+        "accuracy_mean": 0.8742,
+        "accuracy_std": 0.0075,
+        "roc_auc_mean": 0.9571,
+        "roc_auc_std": 0.0023
+      },
+      "trees_200_depth_15": {
+        "params": {
+          "n_estimators": 200,
+          "max_depth": 15
+        },
+        "f1_mean": 0.887,
+        "f1_std": 0.0062,
+        "accuracy_mean": 0.8758,
+        "accuracy_std": 0.0078,
+        "roc_auc_mean": 0.9578,
+        "roc_auc_std": 0.0025
+      }
+    },
+    "best_hyperparameter": {
+      "key": "trees_100_depth_10",
+      "params": {
+        "n_estimators": 100,
+        "max_depth": 10
+      },
+      "validation_f1_mean": 0.8908
+    }
+  },
+  "historical_qsvc_comparison": {
+    "historical_stage5_6_setup": {
+      "classifier": "qiskit_machine_learning.algorithms.QSVC(C=10.0)",
+      "kernel_backend": "FidelityQuantumKernel with ComputeUncompute + StatevectorSampler (1024 shots)",
+      "tuning": "None (fixed arbitrary default C=10.0)",
+      "training_size": 100,
+      "test_size": 100,
+      "shot_noise": "Present (~0.03 statistical variance)",
+      "psd_projection": "Enforced via heuristic eigenvalue thresholding"
+    },
+    "stage7b_v2_setup": {
+      "classifier": "sklearn.svm.SVC(kernel='precomputed')",
+      "kernel_backend": "Exact Statevector Embedding + BLAS Matmul (0 shots, analytic)",
+      "tuning": "Empirically validated on 1,000 disjoint tuning samples across 5 seeds; best C=10.0",
+      "training_size": "Scalable from 100 up to 4000 samples",
+      "test_size": "20,000 fixed stratified held-out test subset",
+      "shot_noise": "None (pure statevector inner products in C^16)",
+      "psd_projection": "Naturally strictly PSD (min eigenvalue >= -1e-15)",
+      "speedup": "Over 60x to 150x faster for kernel computation"
+    },
+    "differences_documented": [
+      "Scaling: Historical circuit simulation limited experiments to N=100; statevector approach enables N=4000 and 20,000 test flows.",
+      "Kernel: Exact statevector eliminates shot noise and negative eigenvalues present in historical StatevectorSampler.",
+      "Tuning: Systematically evaluated C in [0.01, 100.0] on a strictly disjoint 1,000-flow validation partition rather than un-tuned default.",
+      "Separation of Runtimes: Training time and inference time are decomposed into kernel matmul and solver optimization phases."
+    ]
+  }
+}

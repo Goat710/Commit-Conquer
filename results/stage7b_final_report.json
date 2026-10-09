@@ -1,0 +1,106 @@
+{
+  "project": "Quantum CyberShield — Stage 7b Research & Validation",
+  "hackathon": "Qiskit Fall Fest 2026",
+  "dataset": "UNSW-NB15 (Binary Intrusion Detection)",
+  "baseline_commit": "b6033ec",
+  "completion_timestamp": "2026-10-10",
+  "status": "COMPLETED_AND_VERIFIED",
+  "quantum_advantage_ruling": {
+    "claim_supported": false,
+    "ruling": "NO QUANTUM ADVANTAGE",
+    "rationale": "Rigorous paired bootstrap hypothesis testing, McNemar error analysis, probability calibration auditing, and disagreement analysis conclusively demonstrate that the quantum kernel classifier (QSVC with ZZFeatureMap) does not outperform classical baselines. Classical Random Forest achieves superior discrimination (ROC-AUC 0.9823 vs 0.9526), 4x lower false positive rate (4.11% vs 16.50%), significantly fewer classification errors (McNemar chi2 = 442.91, p < 1e-15), superior probability calibration (Brier 0.0667 vs 0.1092, ECE 0.0635 vs 0.1463), and scales to the full dataset with O(N log N) complexity."
+  },
+  "verified_benchmarks": {
+    "test_subset_n20000": {
+      "qsvc_n4000": {
+        "accuracy": 0.8905,
+        "f1": 0.9183,
+        "roc_auc": 0.9526,
+        "false_positive_rate": 0.165,
+        "brier_score": 0.1092,
+        "ece": 0.1463
+      },
+      "classical_svm_n4000": {
+        "accuracy": 0.8693,
+        "f1": 0.8982,
+        "roc_auc": 0.9556,
+        "false_positive_rate": 0.0832,
+        "brier_score": 0.087,
+        "ece": 0.0981
+      },
+      "classical_rf_n4000": {
+        "accuracy": 0.8896,
+        "f1": 0.9136,
+        "roc_auc": 0.9823,
+        "false_positive_rate": 0.0411,
+        "brier_score": 0.0667,
+        "ece": 0.0635
+      }
+    },
+    "full_official_test_n175341": {
+      "classical_rf_full": {
+        "accuracy": 0.8988,
+        "f1": 0.9213,
+        "roc_auc": 0.9833,
+        "false_positive_rate": 0.0401,
+        "train_time_s": 3.26,
+        "inference_time_s": 2.0
+      },
+      "classical_svm_full": {
+        "accuracy": 0.8532,
+        "f1": 0.8834,
+        "roc_auc": 0.9569,
+        "false_positive_rate": 0.0703,
+        "train_time_s": 344.29,
+        "inference_time_s": 484.7
+      },
+      "qsvc_full_feasibility": {
+        "dense_gram_matrix_ram_gb": 54.17,
+        "dense_test_kernel_ram_gb": 115.49,
+        "status": "Infeasible in dense dual form without chunking/linear approximations"
+      }
+    }
+  },
+  "paired_statistical_comparison_at_seed42": {
+    "qsvc_vs_rf": {
+      "mcnemar_chi2": 442.91,
+      "p_value_holm": 0.0,
+      "delta_accuracy_bootstrap_mean": -0.0586,
+      "delta_accuracy_95_ci": [-0.0642, -0.0534],
+      "delta_roc_auc_bootstrap_mean": -0.0336,
+      "delta_roc_auc_95_ci": [-0.037, -0.0307],
+      "delta_fpr_bootstrap_mean": 0.0496,
+      "delta_fpr_95_ci": [0.0423, 0.0569],
+      "practical_equivalence_rope_001": "Practically inferior"
+    },
+    "qsvc_vs_svm": {
+      "mcnemar_chi2": 289.54,
+      "p_value_holm": 0.0,
+      "delta_accuracy_bootstrap_mean": -0.0368,
+      "delta_accuracy_95_ci": [-0.0408, -0.0326],
+      "delta_roc_auc_bootstrap_mean": -0.0109,
+      "delta_roc_auc_95_ci": [-0.0138, -0.0082],
+      "delta_fpr_bootstrap_mean": 0.0084,
+      "delta_fpr_95_ci": [0.0025, 0.0144],
+      "practical_equivalence_rope_001": "Practically inferior"
+    }
+  },
+  "disagreement_and_ensemble_summary": {
+    "unanimous_3way_agreement_rate": 0.8101,
+    "disagreement_rate": 0.1899,
+    "rf_accuracy_on_disagreement": 0.6522,
+    "svm_accuracy_on_disagreement": 0.5379,
+    "qsvc_accuracy_on_disagreement": 0.3436,
+    "rf_alone_correct_count": 1186,
+    "qsvc_alone_correct_count": 226,
+    "majority_vote_accuracy": 0.8677,
+    "majority_vote_penalty_vs_rf": -0.0225,
+    "ensemble_complementarity_disclaimer": "Confirmed: QSVC does not complement classical baselines; majority voting degrades accuracy."
+  },
+  "test_suite_status": {
+    "total_tests_passing": 154,
+    "failures": 0,
+    "errors": 0,
+    "git_tracked_changes": 0
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "step": "Stage 7b Step 3 \u2014 Dry Run and Scaling Benchmark",
+  "dry_run_parameters": {
+    "seed": 42,
+    "n_train": 500,
+    "n_tune": 1000,
+    "n_cal": 2000,
+    "n_test": 20000,
+    "chunk_size": 10000,
+    "features": [
+      "sbytes",
+      "sload",
+      "sttl",
+      "smean"
+    ],
+    "classifier": "SVC(kernel='precomputed', C=1.0)"
+  },
+  "timings_s": {
+    "preprocessing_fit_transform": 0.0031,
+    "train_statevector_embedding": 1.4566,
+    "train_kernel_generation": 0.0084,
+    "test_statevector_embedding": 127.9301,
+    "test_kernel_generation": 0.1681,
+    "model_fit": 0.0063,
+    "model_predict": 0.0753,
+    "total_dry_run_time": 129.7787
+  },
+  "resource_usage": {
+    "peak_memory_mb": 236.54,
+    "train_cache_size_kb": 1953.25,
+    "test_cache_size_kb": 78125.12,
+    "test_kernel_memory_mb": 76.29
+  },
+  "classification_performance": {
+    "accuracy": 0.9043,
+    "precision": 0.9126,
+    "recall": 0.9504,
+    "f1": 0.9311,
+    "roc_auc": 0.9552,
+    "false_positive_rate": 0.194,
+    "confusion_matrix": {
+      "tn": 5149,
+      "fp": 1239,
+      "fn": 675,
+      "tp": 12937
+    }
+  },
+  "scaling_projections": {
+    "N_100": {
+      "n_train": 100,
+      "n_test": 20000,
+      "est_train_embed_s": 0.64,
+      "est_train_kernel_s": 0.0003,
+      "est_test_kernel_s": 0.034,
+      "est_fit_time_s": 0.0,
+      "est_pred_time_s": 0.075,
+      "est_total_per_seed_s": 0.75,
+      "test_matrix_memory_mb": 15.26
+    },
+    "N_500": {
+      "n_train": 500,
+      "n_test": 20000,
+      "est_train_embed_s": 3.198,
+      "est_train_kernel_s": 0.0084,
+      "est_test_kernel_s": 0.168,
+      "est_fit_time_s": 0.006,
+      "est_pred_time_s": 0.075,
+      "est_total_per_seed_s": 3.46,
+      "test_matrix_memory_mb": 76.29
+    },
+    "N_1000": {
+      "n_train": 1000,
+      "n_test": 20000,
+      "est_train_embed_s": 6.397,
+      "est_train_kernel_s": 0.0336,
+      "est_test_kernel_s": 0.336,
+      "est_fit_time_s": 0.025,
+      "est_pred_time_s": 0.075,
+      "est_total_per_seed_s": 6.87,
+      "test_matrix_memory_mb": 152.59
+    },
+    "N_2000": {
+      "n_train": 2000,
+      "n_test": 20000,
+      "est_train_embed_s": 12.793,
+      "est_train_kernel_s": 0.1343,
+      "est_test_kernel_s": 0.673,
+      "est_fit_time_s": 0.1,
+      "est_pred_time_s": 0.075,
+      "est_total_per_seed_s": 13.78,
+      "test_matrix_memory_mb": 305.18
+    },
+    "N_4000": {
+      "n_train": 4000,
+      "n_test": 20000,
+      "est_train_embed_s": 25.586,
+      "est_train_kernel_s": 0.5374,
+      "est_test_kernel_s": 1.345,
+      "est_fit_time_s": 0.402,
+      "est_pred_time_s": 0.075,
+      "est_total_per_seed_s": 27.95,
+      "test_matrix_memory_mb": 610.35
+    }
+  },
+  "full_experiment_estimate": {
+    "total_estimated_compute_5_seeds_all_sizes_s": 264.1,
+    "total_estimated_compute_minutes": 4.4,
+    "max_memory_per_run_mb": 660.4,
+    "feasibility_assessment": "Highly feasible. Evaluating all 5 seeds across all 5 training sizes ([100, 500, 1000, 2000, 4000]) on 20,000 test samples will take approximately 4.4 minutes total, with peak RAM < 700 MB. The test embeddings (20,000 samples) need only be computed once and reused across different training sizes, further reducing actual compute time."
+  }
+}
