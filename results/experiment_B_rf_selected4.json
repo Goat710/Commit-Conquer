@@ -1,0 +1,65 @@
+{
+  "experiment_name": "Experiment B - Classical Ceiling",
+  "model_name": "Random Forest",
+  "feature_set": "selected_4",
+  "features": [
+    "sbytes",
+    "sload",
+    "sttl",
+    "smean"
+  ],
+  "selected_hyperparameters": {
+    "max_depth": 20,
+    "min_samples_leaf": 2,
+    "n_estimators": 100
+  },
+  "accuracy": 0.898843,
+  "precision": 0.97884,
+  "recall": 0.870187,
+  "f1": 0.921321,
+  "roc_auc": 0.983318,
+  "false_positive_rate": 0.040089,
+  "confusion_matrix": [
+    [
+      53755,
+      2245
+    ],
+    [
+      15492,
+      103849
+    ]
+  ],
+  "classification_report": {
+    "0": {
+      "precision": 0.7762791167848426,
+      "recall": 0.9599107142857143,
+      "f1-score": 0.8583838335449152,
+      "support": 56000.0
+    },
+    "1": {
+      "precision": 0.978839519671235,
+      "recall": 0.8701871108839376,
+      "f1-score": 0.921321001619092,
+      "support": 119341.0
+    },
+    "accuracy": 0.8988428262642508,
+    "macro avg": {
+      "precision": 0.8775593182280388,
+      "recall": 0.915048912584826,
+      "f1-score": 0.8898524175820036,
+      "support": 175341.0
+    },
+    "weighted avg": {
+      "precision": 0.9141462502040939,
+      "recall": 0.8988428262642508,
+      "f1-score": 0.9012202755358948,
+      "support": 175341.0
+    }
+  },
+  "train_time": 3.2617,
+  "total_inference_time": 1.9958,
+  "inference_time_per_1000_samples": 0.011382,
+  "random_seed": 42,
+  "n_train_samples": 55945,
+  "n_test_samples": 175341
+}

@@ -1,0 +1,64 @@
+{
+  "experiment_name": "Experiment B - Classical Ceiling",
+  "model_name": "SVM (RBF)",
+  "feature_set": "selected_4",
+  "features": [
+    "sbytes",
+    "sload",
+    "sttl",
+    "smean"
+  ],
+  "selected_hyperparameters": {
+    "C": 5.0,
+    "gamma": "auto"
+  },
+  "accuracy": 0.853183,
+  "precision": 0.961201,
+  "recall": 0.81728,
+  "f1": 0.883417,
+  "roc_auc": 0.956869,
+  "false_positive_rate": 0.070304,
+  "confusion_matrix": [
+    [
+      52063,
+      3937
+    ],
+    [
+      21806,
+      97535
+    ]
+  ],
+  "classification_report": {
+    "0": {
+      "precision": 0.704801743627232,
+      "recall": 0.9296964285714285,
+      "f1-score": 0.8017771754614265,
+      "support": 56000.0
+    },
+    "1": {
+      "precision": 0.9612011195206559,
+      "recall": 0.8172798954257129,
+      "f1-score": 0.8834171901110894,
+      "support": 119341.0
+    },
+    "accuracy": 0.8531832258285285,
+    "macro avg": {
+      "precision": 0.833001431573944,
+      "recall": 0.8734881619985707,
+      "f1-score": 0.842597182786258,
+      "support": 175341.0
+    },
+    "weighted avg": {
+      "precision": 0.8793128843102275,
+      "recall": 0.8531832258285285,
+      "f1-score": 0.8573431924700293,
+      "support": 175341.0
+    }
+  },
+  "train_time": 344.2867,
+  "total_inference_time": 484.6984,
+  "inference_time_per_1000_samples": 2.764319,
+  "random_seed": 42,
+  "n_train_samples": 55945,
+  "n_test_samples": 175341
+}
