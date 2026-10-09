@@ -55,3 +55,18 @@ DATASET_SOURCE_URL_TRAIN: str = (
 DATASET_SOURCE_URL_TEST: str = (
     "https://huggingface.co/datasets/Mireu-Lab/UNSW-NB15/resolve/main/test.csv"
 )
+
+# ==========================================
+# CyberShield Policy Configuration (Stage 7)
+# ==========================================
+# Threat level mapped directly from model consensus votes (0 to 3)
+VOTE_THREAT_POLICY: dict = {
+    0: "LOW",
+    1: "MEDIUM",
+    2: "HIGH",
+    3: "HIGH",
+}
+
+# Review flag triggered whenever models disagree (votes 1 or 2)
+REVIEW_FLAG_REASON: str = "Analyst-review signal from heterogeneous models"
+

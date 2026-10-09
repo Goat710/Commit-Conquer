@@ -1,0 +1,86 @@
+{
+  "schema_version": "1.0.0",
+  "test_sample_count": 100,
+  "models": [
+    "SVM",
+    "Random_Forest",
+    "QSVC"
+  ],
+  "features": [
+    "sbytes",
+    "sload",
+    "sttl",
+    "smean"
+  ],
+  "pairwise_agreement": {
+    "SVM_vs_Random_Forest": {
+      "agreed_count": 91,
+      "disagreed_count": 9,
+      "total_samples": 100,
+      "agreement_rate": 0.91,
+      "disagreement_rate": 0.09
+    },
+    "SVM_vs_QSVC": {
+      "agreed_count": 92,
+      "disagreed_count": 8,
+      "total_samples": 100,
+      "agreement_rate": 0.92,
+      "disagreement_rate": 0.08
+    },
+    "Random_Forest_vs_QSVC": {
+      "agreed_count": 89,
+      "disagreed_count": 11,
+      "total_samples": 100,
+      "agreement_rate": 0.89,
+      "disagreement_rate": 0.11
+    }
+  },
+  "ensemble_agreement": {
+    "unanimous_agreement_count": 86,
+    "unanimous_rate": 0.86,
+    "disagreement_count": 14,
+    "disagreement_rate": 0.14
+  },
+  "correctness_on_ensemble_disagreements": {
+    "disagreement_denominator": 14,
+    "SVM": {
+      "correct_count": 6,
+      "accuracy_on_disagreements": 0.428571
+    },
+    "Random_Forest": {
+      "correct_count": 9,
+      "accuracy_on_disagreements": 0.642857
+    },
+    "QSVC": {
+      "correct_count": 6,
+      "accuracy_on_disagreements": 0.428571
+    }
+  },
+  "pairwise_disagreement_breakdown": {
+    "SVM_vs_Random_Forest": {
+      "disagreement_count": 9,
+      "SVM_correct": 3,
+      "Random_Forest_correct": 6,
+      "both_wrong": 0,
+      "SVM_accuracy_on_disagreements": 0.333333,
+      "Random_Forest_accuracy_on_disagreements": 0.666667
+    },
+    "SVM_vs_QSVC": {
+      "disagreement_count": 8,
+      "SVM_correct": 4,
+      "QSVC_correct": 4,
+      "both_wrong": 0,
+      "SVM_accuracy_on_disagreements": 0.5,
+      "QSVC_accuracy_on_disagreements": 0.5
+    },
+    "Random_Forest_vs_QSVC": {
+      "disagreement_count": 11,
+      "Random_Forest_correct": 7,
+      "QSVC_correct": 4,
+      "both_wrong": 0,
+      "Random_Forest_accuracy_on_disagreements": 0.636364,
+      "QSVC_accuracy_on_disagreements": 0.363636
+    }
+  },
+  "interpretation": "On the 14 held-out test samples where the heterogeneous models disagreed, Classical Random Forest achieved the highest correctness (9/14, 64.3%), while Classical SVM and QSVC tied (6/14, 42.9%). Heterogeneous disagreements provide an effective trigger for human analyst review, without indicating quantum supremacy over classical tree models."
+}
