@@ -1,0 +1,220 @@
+{
+  "benchmark_title": "Stage 5 Step 4 - Restricted Quantum Kernel Benchmark",
+  "created_at_utc": "2026-10-09 03:52:15Z",
+  "safety_limits": {
+    "candidate_sizes": [
+      50,
+      100,
+      200,
+      400
+    ],
+    "max_runtime_per_run_s": 120.0,
+    "max_projected_next_run_s": 180.0,
+    "max_samples_hard_limit": 400,
+    "data_source": "UNSW-NB15 training-set only (no test data)"
+  },
+  "software_versions": {
+    "python": "3.14.6",
+    "os": "Windows-11-10.0.26200-SP0",
+    "numpy": "2.5.3",
+    "scikit_learn": "1.9.1",
+    "qiskit": "2.5.2",
+    "qiskit_machine_learning": "0.9.1",
+    "qiskit_aer": "0.17.2"
+  },
+  "backend": {
+    "primitive": "StatevectorSampler",
+    "simulation": "exact_statevector",
+    "shots": 1024,
+    "seed": 42,
+    "enforce_psd": true,
+    "feature_map": {
+      "type": "ZZFeatureMap",
+      "n_qubits": 4,
+      "reps": 2,
+      "entanglement": "linear"
+    }
+  },
+  "completed_runs": [
+    {
+      "n_samples": 50,
+      "status": "completed",
+      "elapsed_time_s": 9.384,
+      "matrix_shape": [
+        50,
+        50
+      ],
+      "matrix_entries": 2500,
+      "matrix_memory": {
+        "entries": 2500,
+        "bytes": 20000,
+        "kb": 19.5312,
+        "mb": 0.0191,
+        "gb": 1.9e-05
+      },
+      "label_distribution": {
+        "benign_0": 22,
+        "attack_1": 28
+      }
+    },
+    {
+      "n_samples": 100,
+      "status": "completed",
+      "elapsed_time_s": 37.6383,
+      "matrix_shape": [
+        100,
+        100
+      ],
+      "matrix_entries": 10000,
+      "matrix_memory": {
+        "entries": 10000,
+        "bytes": 80000,
+        "kb": 78.125,
+        "mb": 0.0763,
+        "gb": 7.5e-05
+      },
+      "label_distribution": {
+        "benign_0": 45,
+        "attack_1": 55
+      }
+    },
+    {
+      "n_samples": 200,
+      "status": "completed",
+      "elapsed_time_s": 150.9296,
+      "matrix_shape": [
+        200,
+        200
+      ],
+      "matrix_entries": 40000,
+      "matrix_memory": {
+        "entries": 40000,
+        "bytes": 320000,
+        "kb": 312.5,
+        "mb": 0.3052,
+        "gb": 0.000298
+      },
+      "label_distribution": {
+        "benign_0": 90,
+        "attack_1": 110
+      }
+    }
+  ],
+  "skipped_runs": [
+    {
+      "n_samples": 400,
+      "status": "skipped",
+      "skip_reason": "Previous run (n=200) elapsed time 150.93s exceeded threshold of 120.0s.",
+      "projected_time_s": null,
+      "matrix_shape": [
+        400,
+        400
+      ],
+      "matrix_memory": {
+        "entries": 160000,
+        "bytes": 1280000,
+        "kb": 1250.0,
+        "mb": 1.2207,
+        "gb": 0.001192
+      }
+    }
+  ],
+  "extrapolations": {
+    "basis_run": {
+      "n_samples": 200,
+      "elapsed_time_s": 150.9296,
+      "entries_computed": 40000,
+      "cost_per_entry_seconds": 0.00377324
+    },
+    "assumptions": "Extrapolations assume strictly quadratic O(n^2) scaling of kernel evaluations with constant overhead per entry on identical single-thread CPU hardware. In reality, memory pressure and cache misses would increase cost further for large matrices.",
+    "full_dataset_projections": {
+      "full_training_kernel": {
+        "shape": [
+          82332,
+          82332
+        ],
+        "memory": {
+          "entries": 6778558224,
+          "bytes": 54228465792,
+          "kb": 52957486.125,
+          "mb": 51716.295,
+          "gb": 50.504194
+        },
+        "projected_time_seconds": 25577127.03,
+        "projected_time_hours": 7104.76,
+        "projected_time_days": 296.03,
+        "feasible": false,
+        "reason": "Requires 50.50 GB RAM and ~296.0 days of compute on CPU."
+      },
+      "full_test_evaluation_kernel": {
+        "shape": [
+          82332,
+          175341
+        ],
+        "memory": {
+          "entries": 14436175212,
+          "bytes": 115489401696,
+          "kb": 112782618.8438,
+          "mb": 110139.2762,
+          "gb": 107.557887
+        },
+        "projected_time_seconds": 54471153.76,
+        "projected_time_hours": 15130.88,
+        "projected_time_days": 630.45,
+        "feasible": false,
+        "reason": "Requires 107.56 GB RAM and ~630.5 days of compute on CPU."
+      }
+    },
+    "subset_projections": {
+      "candidate_n100": {
+        "train_eval": {
+          "shape": [
+            100,
+            100
+          ],
+          "memory_mb": 0.0763,
+          "projected_time_s": 37.73
+        },
+        "test_eval_100_samples": {
+          "shape": [
+            100,
+            100
+          ],
+          "memory_mb": 0.0763,
+          "projected_time_s": 37.73
+        }
+      },
+      "candidate_n200": {
+        "train_eval": {
+          "shape": [
+            200,
+            200
+          ],
+          "memory_mb": 0.3052,
+          "projected_time_s": 150.93
+        },
+        "test_eval_100_samples": {
+          "shape": [
+            100,
+            200
+          ],
+          "memory_mb": 0.1526,
+          "projected_time_s": 75.46
+        }
+      }
+    }
+  },
+  "recommendations": {
+    "recommended_N_train_q": 100,
+    "recommended_N_test": 100,
+    "recommended_N_val": 50,
+    "practical_runtime_budget_minutes": 5,
+    "rationale": "n=200 completed successfully. For rapid parameter tuning across C in [0.1, 1.0, 10.0] with precomputed kernel caching, n_train=100 provides high confidence with low runtime risk.",
+    "hard_ceiling_compliance": {
+      "max_training_subsample_limit": 200,
+      "max_validation_subsample_limit": 50,
+      "max_test_subsample_limit": 100,
+      "complies_with_limits": true
+    }
+  }
+}

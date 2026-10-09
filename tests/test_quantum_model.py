@@ -1,4 +1,4 @@
-﻿"""Unit tests for src/quantum_model.py — Step 1: Quantum scaling helpers.
+"""Unit tests for src/quantum_model.py — Step 1: Quantum scaling helpers.
 
 Tests cover:
   - Correct scaling to [0, pi] range
@@ -236,3 +236,199 @@ class TestSaveCircuitDiagram:
         nested = tmp_path / "a" / "b" / "c" / "circuit.png"
         save_circuit_diagram(qc, nested)
         assert nested.exists()
+
+
+# ---------------------------------------------------------------------------
+# Step 3 -- FidelityQuantumKernel and verify_kernel_matrix tests
+# ---------------------------------------------------------------------------
+
+from qiskit_machine_learning.kernels import FidelityQuantumKernel
+from src.quantum_model import build_quantum_kernel, verify_kernel_matrix
+
+
+class TestBuildQuantumKernel:
+    def test_returns_fidelity_quantum_kernel(self):
+        """build_quantum_kernel must return a FidelityQuantumKernel."""
+        qc = build_feature_map(n_features=2, reps=1)
+        kernel = build_quantum_kernel(qc, seed=42)
+        assert isinstance(kernel, FidelityQuantumKernel)
+
+    def test_enforce_psd_toggle(self):
+        """enforce_psd parameter should configure the kernel properly."""
+        qc = build_feature_map(n_features=2, reps=1)
+        kernel_raw = build_quantum_kernel(qc, seed=42, enforce_psd=False)
+        kernel_psd = build_quantum_kernel(qc, seed=42, enforce_psd=True)
+        assert kernel_raw.enforce_psd is False
+        assert kernel_psd.enforce_psd is True
+
+    def test_evaluates_toy_kernel(self):
+        """Evaluate a small 2-sample 2-qubit kernel matrix."""
+        qc = build_feature_map(n_features=2, reps=1)
+        kernel = build_quantum_kernel(qc, seed=42, enforce_psd=False)
+        X_toy = np.array([[0.1, 0.2], [0.8, 0.9]])
+        K = kernel.evaluate(X_toy)
+
+        assert K.shape == (2, 2)
+        assert np.all(K >= 0.0)
+        assert np.all(K <= 1.0 + 1e-6)
+        np.testing.assert_allclose(np.diag(K), 1.0, atol=1e-6)
+
+
+    def test_raw_kernel_diagnostics_enforce_psd_false(self):
+        """Evaluate raw kernel (enforce_psd=False) and test diagnostics reporting."""
+        qc = build_feature_map(n_features=2, reps=1)
+        kernel = build_quantum_kernel(qc, seed=42, enforce_psd=False)
+        X_toy = np.array([[0.1, 0.2], [0.8, 0.9]])
+        K_raw = kernel.evaluate(X_toy)
+
+        diag = verify_kernel_matrix(K_raw, tol_diag=1e-5, tol_psd=-0.05)
+        assert diag["diag_min"] == 1.0
+        assert diag["diag_max"] == 1.0
+        assert "min_eigenvalue" in diag
+        assert "strictly_psd" in diag
+        assert "passes_psd_tolerance" in diag
+        assert diag["passes_psd_tolerance"] is True
+        assert diag["all_passed"] is True
+
+    def test_psd_projection_behavior(self):
+        """Evaluate PSD-projected kernel (enforce_psd=True) and ensure non-negative eigenvalues."""
+        qc = build_feature_map(n_features=2, reps=1)
+        kernel = build_quantum_kernel(qc, seed=42, enforce_psd=True)
+        X_toy = np.array([[0.1, 0.2], [0.8, 0.9]])
+        K_psd = kernel.evaluate(X_toy)
+
+        K_psd_sym = (K_psd + K_psd.T) / 2.0
+        min_eig = float(np.min(np.linalg.eigvalsh(K_psd_sym)))
+        assert min_eig >= -1e-12, f"PSD projection produced negative eigenvalue {min_eig}"
+
+
+class TestVerifyKernelMatrix:
+    def test_identity_matrix_passes(self):
+        """An identity matrix is trivially symmetric, PSD, diag=1, in [0, 1]."""
+        K = np.eye(4)
+        diag = verify_kernel_matrix(K)
+        assert diag["all_passed"] is True
+        assert diag["shape"] == [4, 4]
+        assert diag["diag_min"] == 1.0
+        assert diag["diag_max"] == 1.0
+        assert diag["is_symmetric"] is True
+        assert diag["strictly_psd"] is True
+        assert diag["passes_psd_tolerance"] is True
+        assert diag["is_psd"] is True
+
+    def test_distinguishes_strictly_psd_from_tolerance_pass(self):
+        """A matrix with small negative eigenvalue passes tolerance but is not strictly PSD."""
+        # Diagonal 1, symmetric, but small negative eigenvalue
+        K = np.array([[1.0, 0.999], [0.999, 1.0]])
+        # Perturb with a small negative eigenvalue within tolerance
+        # e.g., 3x3 matrix:
+        K_shot_noise = np.array([
+            [1.0, 0.9, 0.0],
+            [0.9, 1.0, 0.9],
+            [0.0, 0.9, 1.0]
+        ])
+        # eigenvalues: ~ -0.2728
+        # If tol_psd is set to -0.3:
+        diag = verify_kernel_matrix(K_shot_noise, tol_psd=-0.3)
+        assert diag["all_passed"] is True
+        assert diag["passes_psd_tolerance"] is True
+        assert diag["strictly_psd"] is False
+        assert diag["min_eigenvalue"] < 0.0
+
+    def test_valid_gram_matrix_passes(self):
+        """A valid positive semi-definite correlation/Gram matrix passes."""
+        v = np.array([[1.0, 0.5], [0.5, 1.0]])
+        diag = verify_kernel_matrix(v)
+        assert diag["all_passed"] is True
+        assert diag["min_eigenvalue"] >= 0.0
+        assert diag["strictly_psd"] is True
+        assert diag["passes_psd_tolerance"] is True
+
+    def test_rejects_non_square(self):
+        """Non-square matrices must raise ValueError."""
+        with pytest.raises(ValueError, match="not square"):
+            verify_kernel_matrix(np.ones((3, 4)))
+
+    def test_rejects_1d_input(self):
+        """1-D input must raise ValueError."""
+        with pytest.raises(ValueError, match="not square"):
+            verify_kernel_matrix(np.array([1.0, 1.0]))
+
+    def test_rejects_bad_diagonal(self):
+        """Diagonal values not equal to 1.0 within tolerance must raise ValueError."""
+        K = np.array([[0.8, 0.2], [0.2, 1.0]])
+        with pytest.raises(ValueError, match="Diagonal deviation"):
+            verify_kernel_matrix(K, tol_diag=1e-5)
+
+    def test_rejects_asymmetry(self):
+        """Asymmetric matrices must raise ValueError."""
+        K = np.array([[1.0, 0.3], [0.1, 1.0]])
+        with pytest.raises(ValueError, match="not symmetric"):
+            verify_kernel_matrix(K, tol_sym=1e-5)
+
+    def test_rejects_value_above_one(self):
+        """Values exceeding 1 + tolerance must raise ValueError."""
+        K = np.array([[1.0, 1.05], [1.05, 1.0]])
+        with pytest.raises(ValueError, match="Values outside"):
+            verify_kernel_matrix(K, tol_range=1e-5)
+
+    def test_rejects_value_below_zero(self):
+        """Values below 0 - tolerance must raise ValueError."""
+        K = np.array([[1.0, -0.05], [-0.05, 1.0]])
+        with pytest.raises(ValueError, match="Values outside"):
+            verify_kernel_matrix(K, tol_range=1e-5)
+
+    def test_rejects_non_psd(self):
+        """Matrices with negative eigenvalues beyond tol_psd must raise ValueError."""
+        K_non_psd = np.array([
+            [1.0, 0.9, 0.0],
+            [0.9, 1.0, 0.9],
+            [0.0, 0.9, 1.0]
+        ])
+        with pytest.raises(ValueError, match="Not positive semidefinite"):
+            verify_kernel_matrix(K_non_psd, tol_psd=-1e-8)
+
+    def test_custom_tolerances_respected(self):
+        """Custom tolerances should be respected without raising."""
+        # Slightly off diagonal allowed if tol_diag and tol_range are loose
+        K = np.array([[1.0001, 0.5], [0.5, 1.0]])
+        diag = verify_kernel_matrix(K, tol_diag=1e-3, tol_range=1e-3, tol_psd=-0.1)
+        assert diag["all_passed"] is True
+
+
+class TestVerificationReport:
+    def test_report_json_schema(self):
+        """Check that results/quantum_kernel_verification.json adheres to schema and audit requirements."""
+        from src.config import RESULTS_DIR
+        import json
+
+        report_file = RESULTS_DIR / "quantum_kernel_verification.json"
+        if not report_file.exists():
+            pytest.skip("Report file does not exist yet")
+
+        with open(report_file, "r", encoding="utf-8") as f:
+            data = json.load(f)
+
+        assert data["step"] == "Step 3 - Kernel Correctness Verification"
+        assert data["n_verify_samples"] == 20
+        assert len(data["selected_features"]) == 4
+        assert data["label_distribution"]["benign_0"] + data["label_distribution"]["attack_1"] == 20
+        
+        # Raw kernel diagnostics checks
+        raw_diag = data["diagnostics_raw_kernel"]
+        assert raw_diag["enforce_psd"] is False
+        assert "tol_psd" in raw_diag["tolerances"]
+        assert "min_eigenvalue" in raw_diag
+        assert isinstance(raw_diag["min_eigenvalue"], float)
+        assert "strictly_psd" in raw_diag
+        assert "passes_psd_tolerance" in raw_diag
+        assert raw_diag["all_passed"] is True
+        assert raw_diag["shape"] == [20, 20]
+
+        # PSD-projected kernel diagnostics checks
+        psd_diag = data["diagnostics_psd_projected_kernel"]
+        assert psd_diag["enforce_psd"] is True
+        assert psd_diag["strictly_psd"] is True
+        assert "min_eigenvalue" in psd_diag
+
+

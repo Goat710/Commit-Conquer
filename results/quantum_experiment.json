@@ -1,0 +1,216 @@
+{
+  "schema_version": "1.0.0",
+  "experiment_title": "Stage 5 Step 5 - Restricted QSVC Experiment",
+  "created_at_utc": "2026-10-09 04:38:50Z",
+  "model_name": "Quantum Support Vector Classifier (QSVC, C=10.0)",
+  "is_restricted_subset_experiment": true,
+  "disclaimer": "These metrics reflect a restricted subset experiment (N_train=100, N_test=100) and must NOT be directly compared as equivalent to full-dataset classical models evaluated on the complete 175,341 official test samples.",
+  "quantum_advantage_claimed": false,
+  "quantum_advantage_statement": "No quantum advantage is claimed. Classical baselines on full datasets achieved ROC-AUC > 0.98. The QSVC experiment demonstrates functional quantum kernel classification feasibility on NISQ-era simulation constraints.",
+  "configuration": {
+    "random_seed": 42,
+    "selected_features": [
+      "sbytes",
+      "sload",
+      "sttl",
+      "smean"
+    ],
+    "n_qubits": 4,
+    "feature_map": {
+      "type": "ZZFeatureMap",
+      "n_qubits": 4,
+      "reps": 2,
+      "entanglement": "linear"
+    },
+    "backend": {
+      "primitive": "StatevectorSampler",
+      "simulation": "exact_statevector",
+      "shots": 1024,
+      "seed": 42,
+      "enforce_psd": true
+    },
+    "software_versions": {
+      "python": "3.14.6",
+      "os": "Windows-11-10.0.26200-SP0",
+      "numpy": "2.5.3",
+      "scikit_learn": "1.9.1",
+      "qiskit": "2.5.2",
+      "qiskit_machine_learning": "0.9.1",
+      "qiskit_aer": "0.17.2"
+    }
+  },
+  "data_subsets": {
+    "train": {
+      "n_samples": 100,
+      "benign_0": 45,
+      "attack_1": 55,
+      "source": "official_UNSW_NB15_training-set.csv"
+    },
+    "val": {
+      "n_samples": 50,
+      "benign_0": 22,
+      "attack_1": 28,
+      "source": "official_UNSW_NB15_training-set.csv"
+    },
+    "test": {
+      "n_samples": 100,
+      "benign_0": 32,
+      "attack_1": 68,
+      "source": "official_UNSW_NB15_testing-set.csv"
+    }
+  },
+  "kernel_evaluations": {
+    "training_kernel": {
+      "shape": [
+        100,
+        100
+      ],
+      "entries": 10000,
+      "memory_kb": 78.125,
+      "wall_clock_time_s": 38.119
+    },
+    "validation_kernel": {
+      "shape": [
+        50,
+        100
+      ],
+      "entries": 5000,
+      "memory_kb": 39.0625,
+      "wall_clock_time_s": 37.5688
+    },
+    "test_kernel": {
+      "shape": [
+        100,
+        100
+      ],
+      "entries": 10000,
+      "memory_kb": 78.125,
+      "wall_clock_time_s": 76.4328
+    }
+  },
+  "hyperparameter_selection": {
+    "candidates_evaluated": [
+      {
+        "C": 0.1,
+        "val_accuracy": 0.74,
+        "val_precision": 0.777778,
+        "val_recall": 0.75,
+        "val_f1": 0.763636,
+        "val_roc_auc": 0.850649,
+        "val_confusion_matrix": [
+          [
+            16,
+            6
+          ],
+          [
+            7,
+            21
+          ]
+        ],
+        "fit_time_s": 0.001945,
+        "eval_time_s": 0.000561
+      },
+      {
+        "C": 1.0,
+        "val_accuracy": 0.82,
+        "val_precision": 0.771429,
+        "val_recall": 0.964286,
+        "val_f1": 0.857143,
+        "val_roc_auc": 0.894481,
+        "val_confusion_matrix": [
+          [
+            14,
+            8
+          ],
+          [
+            1,
+            27
+          ]
+        ],
+        "fit_time_s": 0.001282,
+        "eval_time_s": 0.000451
+      },
+      {
+        "C": 10.0,
+        "val_accuracy": 0.84,
+        "val_precision": 0.777778,
+        "val_recall": 1.0,
+        "val_f1": 0.875,
+        "val_roc_auc": 0.845779,
+        "val_confusion_matrix": [
+          [
+            14,
+            8
+          ],
+          [
+            0,
+            28
+          ]
+        ],
+        "fit_time_s": 0.001423,
+        "eval_time_s": 0.000425
+      }
+    ],
+    "selection_metric": "validation_f1_attack_class",
+    "tie_break_rule": "smaller_C",
+    "selected_C": 10.0
+  },
+  "test_evaluation": {
+    "accuracy": 0.81,
+    "precision": 0.835616,
+    "recall": 0.897059,
+    "f1": 0.865248,
+    "roc_auc": 0.857537,
+    "false_positive_rate": 0.375,
+    "confusion_matrix": [
+      [
+        20,
+        12
+      ],
+      [
+        7,
+        61
+      ]
+    ],
+    "classification_report": {
+      "0": {
+        "precision": 0.7407407407407407,
+        "recall": 0.625,
+        "f1-score": 0.6779661016949152,
+        "support": 32.0
+      },
+      "1": {
+        "precision": 0.8356164383561644,
+        "recall": 0.8970588235294118,
+        "f1-score": 0.8652482269503546,
+        "support": 68.0
+      },
+      "accuracy": 0.81,
+      "macro avg": {
+        "precision": 0.7881785895484525,
+        "recall": 0.7610294117647058,
+        "f1-score": 0.771607164322635,
+        "support": 100.0
+      },
+      "weighted avg": {
+        "precision": 0.8052562151192287,
+        "recall": 0.81,
+        "f1-score": 0.805317946868614,
+        "support": 100.0
+      }
+    }
+  },
+  "timings": {
+    "train_kernel_computation_s": 38.119,
+    "val_kernel_computation_s": 37.5688,
+    "test_kernel_computation_s": 76.4328,
+    "final_model_fit_s": 0.001898,
+    "final_test_infer_s": 0.0007,
+    "total_experiment_wall_clock_s": 153.4927
+  },
+  "artifacts": {
+    "results_json": "C:\\Users\\nitin\\Quantam Cybershield\\results\\quantum_experiment.json",
+    "confusion_matrix_plot": "C:\\Users\\nitin\\Quantam Cybershield\\results\\quantum_qsvc_confusion.png",
+    "roc_curve_plot": "C:\\Users\\nitin\\Quantam Cybershield\\results\\quantum_qsvc_roc.png"
+  }
+}

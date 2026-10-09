@@ -1,4 +1,4 @@
-﻿"""Quantum model utilities for Quantum CyberShield — Stage 5.
+"""Quantum model utilities for Quantum CyberShield — Stage 5.
 
 This module provides:
   - Step 1 : Quantum feature scaling helpers (MinMaxScaler -> [0, pi])
@@ -256,3 +256,194 @@ def save_circuit_diagram(circuit: QuantumCircuit, save_path) -> None:
     )
     fig.savefig(save_path, dpi=150, bbox_inches="tight")
     plt.close("all")
+
+
+# ---------------------------------------------------------------------------
+# Step 3 -- FidelityQuantumKernel builder and kernel verification
+# ---------------------------------------------------------------------------
+
+# Qiskit ML 0.9.x: FidelityQuantumKernel accepts a feature_map (QuantumCircuit)
+# and optionally a fidelity primitive.  The default fidelity is ComputeUncompute
+# backed by Qiskit's reference StatevectorSampler.  StatevectorSampler gives
+# exact (noiseless) statevector simulation, which is ideal for correctness
+# verification and matches Aer's statevector backend without needing a separate
+# Aer primitive.
+from qiskit.primitives import StatevectorSampler
+from qiskit_machine_learning.state_fidelities import ComputeUncompute
+from qiskit_machine_learning.kernels import FidelityQuantumKernel
+
+
+def build_quantum_kernel(
+    feature_map: QuantumCircuit,
+    seed: int = 42,
+    enforce_psd: bool = True,
+) -> FidelityQuantumKernel:
+    """Construct a FidelityQuantumKernel backed by exact statevector simulation.
+
+    Parameters
+    ----------
+    feature_map:
+        A parameterised QuantumCircuit (e.g. from build_feature_map).
+    seed:
+        Random seed for the StatevectorSampler (controls shot noise; the
+        statevector itself is deterministic but measurement sampling is not).
+    enforce_psd:
+        If True (default), project the kernel matrix onto the nearest
+        positive-semidefinite matrix.  Set to False for raw kernel
+        verification where you want to inspect the unmodified shot-noise
+        matrix.
+
+    Returns
+    -------
+    FidelityQuantumKernel
+        Ready to call .evaluate(X_train) or .evaluate(X_train, X_test).
+    """
+    # StatevectorSampler: Qiskit's built-in exact simulator (noiseless
+    # statevector, but measurement outcomes are sampled with shot noise).
+    sampler = StatevectorSampler(seed=seed)
+
+    # ComputeUncompute fidelity: computes |<psi|phi>|^2 by appending the
+    # inverse of one circuit to the other, then measuring the all-zeros state
+    # probability.  This is the standard technique for quantum kernel matrices.
+    fidelity = ComputeUncompute(sampler=sampler)
+
+    # FidelityQuantumKernel wraps fidelity computation and provides
+    # .evaluate() for computing kernel matrices.
+    # enforce_psd=True projects onto the nearest PSD matrix; False leaves
+    # the raw (possibly slightly non-PSD due to shot noise) matrix intact.
+    kernel = FidelityQuantumKernel(
+        feature_map=feature_map,
+        fidelity=fidelity,
+        enforce_psd=enforce_psd,
+    )
+    return kernel
+
+
+def verify_kernel_matrix(
+    K: np.ndarray,
+    tol_diag: float = 1e-6,
+    tol_sym: float = 1e-10,
+    tol_range: float = 1e-6,
+    tol_psd: float = -1e-8,
+) -> dict:
+    """Validate invariants of a quantum kernel matrix and return diagnostics.
+
+    Checks performed:
+      1. Shape is square (n x n).
+      2. Diagonal entries are approximately 1.0 (within tol_diag).
+      3. Matrix is symmetric (within tol_sym).
+      4. All values lie in [0 - tol_range, 1 + tol_range].
+      5. The symmetrized matrix (K + K^T)/2 is positive semidefinite:
+         smallest eigenvalue >= tol_psd.
+
+    Parameters
+    ----------
+    K : np.ndarray
+        Square kernel matrix of shape (n, n).
+    tol_diag : float
+        Maximum allowed deviation of diagonal elements from 1.0.
+    tol_sym : float
+        Maximum allowed asymmetry |K - K^T|.
+    tol_range : float
+        Maximum allowed deviation outside [0, 1].
+    tol_psd : float
+        Minimum allowed eigenvalue of the symmetrized matrix.  Slightly
+        negative to absorb floating-point rounding.
+
+    Returns
+    -------
+    dict
+        Diagnostics with keys: shape, diag_min, diag_max, diag_max_dev,
+        is_symmetric, max_asymmetry, value_min, value_max, min_eigenvalue,
+        is_psd, all_passed, tolerances, and any failure_reasons.
+
+    Raises
+    ------
+    ValueError
+        If any invariant fails.  The error message lists all failures.
+    """
+    # 1. Square check
+    if K.ndim != 2 or K.shape[0] != K.shape[1]:
+        raise ValueError(
+            f"Kernel matrix verification FAILED:\n  - Matrix is not square: shape={K.shape}"
+        )
+
+    failures = []
+    n = K.shape[0]
+
+    # 2. Diagonal ~ 1.0
+    diag = np.diag(K)
+    diag_min = float(np.min(diag))
+    diag_max = float(np.max(diag))
+    diag_max_dev = float(np.max(np.abs(diag - 1.0)))
+    if diag_max_dev > tol_diag:
+        failures.append(
+            f"Diagonal deviation from 1.0: max_dev={diag_max_dev:.2e} "
+            f"> tol_diag={tol_diag:.2e}"
+        )
+
+    # 3. Symmetry
+    max_asym = float(np.max(np.abs(K - K.T)))
+    is_symmetric = max_asym <= tol_sym
+    if not is_symmetric:
+        failures.append(
+            f"Matrix is not symmetric: max|K - K^T|={max_asym:.2e} "
+            f"> tol_sym={tol_sym:.2e}"
+        )
+
+    # 4. Values in [0, 1]
+    v_min = float(np.min(K))
+    v_max = float(np.max(K))
+    if v_min < -tol_range or v_max > 1.0 + tol_range:
+        failures.append(
+            f"Values outside [0,1]: min={v_min:.6f}, max={v_max:.6f} "
+            f"(tolerance={tol_range:.2e})"
+        )
+
+    # 5. Positive semidefiniteness via eigenvalues of symmetrized matrix
+    K_sym = (K + K.T) / 2.0
+    eigenvalues = np.linalg.eigvalsh(K_sym)
+    min_eig = float(np.min(eigenvalues))
+    strictly_psd = bool(min_eig >= -1e-12)
+    passes_psd_tolerance = bool(min_eig >= tol_psd)
+    is_psd = passes_psd_tolerance
+
+    if not passes_psd_tolerance:
+        failures.append(
+            f"Not positive semidefinite: min_eigenvalue={min_eig:.2e} "
+            f"< tol_psd={tol_psd:.2e}"
+        )
+
+    all_passed = len(failures) == 0
+
+    diagnostics = {
+        "shape": list(K.shape),
+        "n_samples": n,
+        "diag_min": round(diag_min, 10),
+        "diag_max": round(diag_max, 10),
+        "diag_max_deviation": round(diag_max_dev, 10),
+        "is_symmetric": is_symmetric,
+        "max_asymmetry": round(max_asym, 12),
+        "value_min": round(v_min, 10),
+        "value_max": round(v_max, 10),
+        "min_eigenvalue": round(min_eig, 10),
+        "strictly_psd": strictly_psd,
+        "passes_psd_tolerance": passes_psd_tolerance,
+        "is_psd": is_psd,
+        "all_passed": all_passed,
+        "tolerances": {
+            "tol_diag": tol_diag,
+            "tol_sym": tol_sym,
+            "tol_range": tol_range,
+            "tol_psd": tol_psd,
+        },
+    }
+
+    if failures:
+        diagnostics["failure_reasons"] = failures
+        raise ValueError(
+            "Kernel matrix verification FAILED:\n  - "
+            + "\n  - ".join(failures)
+        )
+
+    return diagnostics

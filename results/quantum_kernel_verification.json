@@ -1,0 +1,66 @@
+{
+  "step": "Step 3 - Kernel Correctness Verification",
+  "n_verify_samples": 20,
+  "selected_features": [
+    "sbytes",
+    "sload",
+    "sttl",
+    "smean"
+  ],
+  "label_distribution": {
+    "benign_0": 9,
+    "attack_1": 11
+  },
+  "feature_map": {
+    "type": "ZZFeatureMap",
+    "n_qubits": 4,
+    "reps": 2,
+    "entanglement": "linear"
+  },
+  "backend": {
+    "primitive": "StatevectorSampler",
+    "simulation": "exact_statevector",
+    "shots": 1024,
+    "noise": "shot_noise_only",
+    "seed": 42,
+    "note": "StatevectorSampler computes exact statevectors but samples measurement outcomes with finite shots, introducing small statistical noise in fidelity estimates.  This causes the raw kernel matrix to have small negative eigenvalues (~-0.006) which is expected and corrected by enforce_psd=True in production."
+  },
+  "kernel_computation_time_s": 1.5049,
+  "diagnostics_raw_kernel": {
+    "shape": [
+      20,
+      20
+    ],
+    "n_samples": 20,
+    "diag_min": 1.0,
+    "diag_max": 1.0,
+    "diag_max_deviation": 0.0,
+    "is_symmetric": true,
+    "max_asymmetry": 0.0,
+    "value_min": 0.0,
+    "value_max": 1.0,
+    "min_eigenvalue": -0.006169984,
+    "strictly_psd": false,
+    "passes_psd_tolerance": true,
+    "is_psd": true,
+    "all_passed": true,
+    "tolerances": {
+      "tol_diag": 1e-10,
+      "tol_sym": 1e-10,
+      "tol_range": 1e-10,
+      "tol_psd": -0.05
+    },
+    "enforce_psd": false
+  },
+  "diagnostics_psd_projected_kernel": {
+    "enforce_psd": true,
+    "diag_min": 1.0000000008,
+    "diag_max": 1.0024361715,
+    "value_min": -7.645e-07,
+    "value_max": 1.0024361715,
+    "min_eigenvalue": -0.0,
+    "strictly_psd": true,
+    "passes_psd_tolerance": true,
+    "note": "PSD projection (enforce_psd=True) ensures positive semidefiniteness but may push diagonal slightly above 1.0 and values slightly below 0.0."
+  }
+}
