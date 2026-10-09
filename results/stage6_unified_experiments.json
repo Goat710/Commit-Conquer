@@ -1,0 +1,2129 @@
+{
+  "schema_version": "1.0.0",
+  "experiment_title": "Stage 6 \u2014 Unified Experiments & Stability Analysis",
+  "created_at_utc": "2026-10-09 06:47:06Z",
+  "disclaimer": "Experiments A, C, and D are evaluated on restricted subsets (N_train=100, N_test=100) and must NOT be directly compared as equivalent to full-dataset classical models evaluated on the complete 175,341 official test samples.",
+  "quantum_advantage_claimed": false,
+  "configuration": {
+    "n_train_samples": 100,
+    "n_test_samples": 100,
+    "primary_seed": 42,
+    "stability_seeds": [
+      42,
+      100,
+      2024,
+      777,
+      999
+    ],
+    "primary_features": [
+      "sbytes",
+      "sload",
+      "sttl",
+      "smean"
+    ],
+    "ablation_features": [
+      "sbytes",
+      "sload",
+      "is_ftp_login",
+      "smean"
+    ],
+    "feature_map": {
+      "type": "ZZFeatureMap",
+      "n_qubits": 4,
+      "reps": 2,
+      "entanglement": "linear"
+    },
+    "backend": {
+      "primitive": "StatevectorSampler",
+      "shots": 1024,
+      "enforce_psd": true
+    },
+    "software_versions": {
+      "python": "3.14.6",
+      "os": "Windows-11-10.0.26200-SP0",
+      "numpy": "2.5.3",
+      "scikit_learn": "1.9.1",
+      "qiskit": "2.5.2",
+      "qiskit_machine_learning": "0.9.1",
+      "qiskit_aer": "0.17.2"
+    },
+    "model_hyperparameters": {
+      "SVM": {
+        "C": 5.0,
+        "gamma": "auto",
+        "kernel": "rbf"
+      },
+      "Random_Forest": {
+        "n_estimators": 100,
+        "max_depth": 20,
+        "min_samples_leaf": 2
+      },
+      "QSVC": {
+        "C": 10.0,
+        "quantum_kernel": "precomputed"
+      }
+    },
+    "decision_score_conventions": {
+      "SVM": "signed distance from decision boundary (decision_function)",
+      "Random_Forest": "probability of ATTACK class (predict_proba[:, 1])",
+      "QSVC": "signed distance from hyperplane in quantum Hilbert space (decision_function)"
+    }
+  },
+  "experiment_A_primary_comparison": {
+    "seed": 42,
+    "features": [
+      "sbytes",
+      "sload",
+      "sttl",
+      "smean"
+    ],
+    "SVM": {
+      "accuracy": 0.82,
+      "precision": 0.878788,
+      "recall": 0.852941,
+      "f1": 0.865672,
+      "roc_auc": 0.842142,
+      "false_positive_rate": 0.25,
+      "confusion_matrix": [
+        [
+          24,
+          8
+        ],
+        [
+          10,
+          58
+        ]
+      ],
+      "classification_report": {
+        "0": {
+          "precision": 0.7058823529411765,
+          "recall": 0.75,
+          "f1-score": 0.7272727272727273,
+          "support": 32.0
+        },
+        "1": {
+          "precision": 0.8787878787878788,
+          "recall": 0.8529411764705882,
+          "f1-score": 0.8656716417910447,
+          "support": 68.0
+        },
+        "accuracy": 0.82,
+        "macro avg": {
+          "precision": 0.7923351158645277,
+          "recall": 0.8014705882352942,
+          "f1-score": 0.7964721845318861,
+          "support": 100.0
+        },
+        "weighted avg": {
+          "precision": 0.8234581105169341,
+          "recall": 0.82,
+          "f1-score": 0.8213839891451832,
+          "support": 100.0
+        }
+      },
+      "train_time": 0.014,
+      "infer_time": 0.0077,
+      "inference_time_per_1000_samples": 0.077314,
+      "model_name": "SVM (RBF)"
+    },
+    "Random_Forest": {
+      "accuracy": 0.85,
+      "precision": 0.895522,
+      "recall": 0.882353,
+      "f1": 0.888889,
+      "roc_auc": 0.944393,
+      "false_positive_rate": 0.21875,
+      "confusion_matrix": [
+        [
+          25,
+          7
+        ],
+        [
+          8,
+          60
+        ]
+      ],
+      "classification_report": {
+        "0": {
+          "precision": 0.7575757575757576,
+          "recall": 0.78125,
+          "f1-score": 0.7692307692307693,
+          "support": 32.0
+        },
+        "1": {
+          "precision": 0.8955223880597015,
+          "recall": 0.8823529411764706,
+          "f1-score": 0.8888888888888888,
+          "support": 68.0
+        },
+        "accuracy": 0.85,
+        "macro avg": {
+          "precision": 0.8265490728177296,
+          "recall": 0.8318014705882353,
+          "f1-score": 0.829059829059829,
+          "support": 100.0
+        },
+        "weighted avg": {
+          "precision": 0.8513794663048395,
+          "recall": 0.85,
+          "f1-score": 0.8505982905982905,
+          "support": 100.0
+        }
+      },
+      "train_time": 0.9404,
+      "infer_time": 0.0655,
+      "inference_time_per_1000_samples": 0.655276,
+      "model_name": "Random Forest"
+    },
+    "QSVC": {
+      "accuracy": 0.82,
+      "precision": 0.890625,
+      "recall": 0.838235,
+      "f1": 0.863636,
+      "roc_auc": 0.837316,
+      "false_positive_rate": 0.21875,
+      "confusion_matrix": [
+        [
+          25,
+          7
+        ],
+        [
+          11,
+          57
+        ]
+      ],
+      "classification_report": {
+        "0": {
+          "precision": 0.6944444444444444,
+          "recall": 0.78125,
+          "f1-score": 0.7352941176470589,
+          "support": 32.0
+        },
+        "1": {
+          "precision": 0.890625,
+          "recall": 0.8382352941176471,
+          "f1-score": 0.8636363636363636,
+          "support": 68.0
+        },
+        "accuracy": 0.82,
+        "macro avg": {
+          "precision": 0.7925347222222222,
+          "recall": 0.8097426470588236,
+          "f1-score": 0.7994652406417113,
+          "support": 100.0
+        },
+        "weighted avg": {
+          "precision": 0.8278472222222223,
+          "recall": 0.82,
+          "f1-score": 0.822566844919786,
+          "support": 100.0
+        }
+      },
+      "train_time": 158.0785,
+      "infer_time": 338.524,
+      "inference_time_per_1000_samples": 3385.240006,
+      "model_name": "QSVC",
+      "kernel_train_time_s": 158.0726,
+      "kernel_test_time_s": 338.5217
+    },
+    "subsets_meta": {
+      "train_benign_0": 45,
+      "train_attack_1": 55,
+      "test_benign_0": 32,
+      "test_attack_1": 68
+    }
+  },
+  "experiment_C_stability_analysis": {
+    "seeds": [
+      42,
+      100,
+      2024,
+      777,
+      999
+    ],
+    "features": [
+      "sbytes",
+      "sload",
+      "sttl",
+      "smean"
+    ],
+    "per_seed_runs": [
+      {
+        "seed": 42,
+        "SVM": {
+          "accuracy": 0.82,
+          "precision": 0.878788,
+          "recall": 0.852941,
+          "f1": 0.865672,
+          "roc_auc": 0.842142,
+          "false_positive_rate": 0.25,
+          "confusion_matrix": [
+            [
+              24,
+              8
+            ],
+            [
+              10,
+              58
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.7058823529411765,
+              "recall": 0.75,
+              "f1-score": 0.7272727272727273,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 0.8787878787878788,
+              "recall": 0.8529411764705882,
+              "f1-score": 0.8656716417910447,
+              "support": 68.0
+            },
+            "accuracy": 0.82,
+            "macro avg": {
+              "precision": 0.7923351158645277,
+              "recall": 0.8014705882352942,
+              "f1-score": 0.7964721845318861,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.8234581105169341,
+              "recall": 0.82,
+              "f1-score": 0.8213839891451832,
+              "support": 100.0
+            }
+          },
+          "train_time": 0.014,
+          "infer_time": 0.0077,
+          "inference_time_per_1000_samples": 0.077314,
+          "model_name": "SVM (RBF)"
+        },
+        "Random_Forest": {
+          "accuracy": 0.85,
+          "precision": 0.895522,
+          "recall": 0.882353,
+          "f1": 0.888889,
+          "roc_auc": 0.944393,
+          "false_positive_rate": 0.21875,
+          "confusion_matrix": [
+            [
+              25,
+              7
+            ],
+            [
+              8,
+              60
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.7575757575757576,
+              "recall": 0.78125,
+              "f1-score": 0.7692307692307693,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 0.8955223880597015,
+              "recall": 0.8823529411764706,
+              "f1-score": 0.8888888888888888,
+              "support": 68.0
+            },
+            "accuracy": 0.85,
+            "macro avg": {
+              "precision": 0.8265490728177296,
+              "recall": 0.8318014705882353,
+              "f1-score": 0.829059829059829,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.8513794663048395,
+              "recall": 0.85,
+              "f1-score": 0.8505982905982905,
+              "support": 100.0
+            }
+          },
+          "train_time": 0.9404,
+          "infer_time": 0.0655,
+          "inference_time_per_1000_samples": 0.655276,
+          "model_name": "Random Forest"
+        },
+        "QSVC": {
+          "accuracy": 0.82,
+          "precision": 0.890625,
+          "recall": 0.838235,
+          "f1": 0.863636,
+          "roc_auc": 0.837316,
+          "false_positive_rate": 0.21875,
+          "confusion_matrix": [
+            [
+              25,
+              7
+            ],
+            [
+              11,
+              57
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.6944444444444444,
+              "recall": 0.78125,
+              "f1-score": 0.7352941176470589,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 0.890625,
+              "recall": 0.8382352941176471,
+              "f1-score": 0.8636363636363636,
+              "support": 68.0
+            },
+            "accuracy": 0.82,
+            "macro avg": {
+              "precision": 0.7925347222222222,
+              "recall": 0.8097426470588236,
+              "f1-score": 0.7994652406417113,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.8278472222222223,
+              "recall": 0.82,
+              "f1-score": 0.822566844919786,
+              "support": 100.0
+            }
+          },
+          "train_time": 158.0785,
+          "infer_time": 338.524,
+          "inference_time_per_1000_samples": 3385.240006,
+          "model_name": "QSVC",
+          "kernel_train_time_s": 158.0726,
+          "kernel_test_time_s": 338.5217
+        }
+      },
+      {
+        "seed": 100,
+        "SVM": {
+          "accuracy": 0.7,
+          "precision": 0.975,
+          "recall": 0.573529,
+          "f1": 0.722222,
+          "roc_auc": 0.907629,
+          "false_positive_rate": 0.03125,
+          "confusion_matrix": [
+            [
+              31,
+              1
+            ],
+            [
+              29,
+              39
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.5166666666666667,
+              "recall": 0.96875,
+              "f1-score": 0.6739130434782609,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 0.975,
+              "recall": 0.5735294117647058,
+              "f1-score": 0.7222222222222222,
+              "support": 68.0
+            },
+            "accuracy": 0.7,
+            "macro avg": {
+              "precision": 0.7458333333333333,
+              "recall": 0.7711397058823529,
+              "f1-score": 0.6980676328502415,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.8283333333333333,
+              "recall": 0.7,
+              "f1-score": 0.7067632850241545,
+              "support": 100.0
+            }
+          },
+          "train_time": 0.0086,
+          "infer_time": 0.0045,
+          "inference_time_per_1000_samples": 0.045407,
+          "model_name": "SVM (RBF)"
+        },
+        "Random_Forest": {
+          "accuracy": 0.81,
+          "precision": 0.945455,
+          "recall": 0.764706,
+          "f1": 0.845528,
+          "roc_auc": 0.932445,
+          "false_positive_rate": 0.09375,
+          "confusion_matrix": [
+            [
+              29,
+              3
+            ],
+            [
+              16,
+              52
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.6444444444444445,
+              "recall": 0.90625,
+              "f1-score": 0.7532467532467533,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 0.9454545454545454,
+              "recall": 0.7647058823529411,
+              "f1-score": 0.8455284552845529,
+              "support": 68.0
+            },
+            "accuracy": 0.81,
+            "macro avg": {
+              "precision": 0.794949494949495,
+              "recall": 0.8354779411764706,
+              "f1-score": 0.7993876042656531,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.8491313131313132,
+              "recall": 0.81,
+              "f1-score": 0.815998310632457,
+              "support": 100.0
+            }
+          },
+          "train_time": 0.4171,
+          "infer_time": 0.0534,
+          "inference_time_per_1000_samples": 0.533789,
+          "model_name": "Random Forest"
+        },
+        "QSVC": {
+          "accuracy": 0.81,
+          "precision": 0.929825,
+          "recall": 0.779412,
+          "f1": 0.848,
+          "roc_auc": 0.914982,
+          "false_positive_rate": 0.125,
+          "confusion_matrix": [
+            [
+              28,
+              4
+            ],
+            [
+              15,
+              53
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.6511627906976745,
+              "recall": 0.875,
+              "f1-score": 0.7466666666666667,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 0.9298245614035088,
+              "recall": 0.7794117647058824,
+              "f1-score": 0.848,
+              "support": 68.0
+            },
+            "accuracy": 0.81,
+            "macro avg": {
+              "precision": 0.7904936760505916,
+              "recall": 0.8272058823529411,
+              "f1-score": 0.7973333333333333,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.8406527947776418,
+              "recall": 0.81,
+              "f1-score": 0.8155733333333334,
+              "support": 100.0
+            }
+          },
+          "train_time": 129.5055,
+          "infer_time": 336.5681,
+          "inference_time_per_1000_samples": 3365.681344,
+          "model_name": "QSVC",
+          "kernel_train_time_s": 129.5012,
+          "kernel_test_time_s": 336.5659
+        }
+      },
+      {
+        "seed": 2024,
+        "SVM": {
+          "accuracy": 0.87,
+          "precision": 0.923077,
+          "recall": 0.882353,
+          "f1": 0.902256,
+          "roc_auc": 0.943015,
+          "false_positive_rate": 0.15625,
+          "confusion_matrix": [
+            [
+              27,
+              5
+            ],
+            [
+              8,
+              60
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.7714285714285715,
+              "recall": 0.84375,
+              "f1-score": 0.8059701492537313,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 0.9230769230769231,
+              "recall": 0.8823529411764706,
+              "f1-score": 0.9022556390977443,
+              "support": 68.0
+            },
+            "accuracy": 0.87,
+            "macro avg": {
+              "precision": 0.8472527472527474,
+              "recall": 0.8630514705882353,
+              "f1-score": 0.8541128941757379,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.8745494505494505,
+              "recall": 0.87,
+              "f1-score": 0.8714442823476601,
+              "support": 100.0
+            }
+          },
+          "train_time": 0.0092,
+          "infer_time": 0.0041,
+          "inference_time_per_1000_samples": 0.041328,
+          "model_name": "SVM (RBF)"
+        },
+        "Random_Forest": {
+          "accuracy": 0.86,
+          "precision": 0.95,
+          "recall": 0.838235,
+          "f1": 0.890625,
+          "roc_auc": 0.965074,
+          "false_positive_rate": 0.09375,
+          "confusion_matrix": [
+            [
+              29,
+              3
+            ],
+            [
+              11,
+              57
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.725,
+              "recall": 0.90625,
+              "f1-score": 0.8055555555555556,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 0.95,
+              "recall": 0.8382352941176471,
+              "f1-score": 0.890625,
+              "support": 68.0
+            },
+            "accuracy": 0.86,
+            "macro avg": {
+              "precision": 0.8374999999999999,
+              "recall": 0.8722426470588236,
+              "f1-score": 0.8480902777777778,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.878,
+              "recall": 0.86,
+              "f1-score": 0.8634027777777777,
+              "support": 100.0
+            }
+          },
+          "train_time": 0.4142,
+          "infer_time": 0.0515,
+          "inference_time_per_1000_samples": 0.515468,
+          "model_name": "Random Forest"
+        },
+        "QSVC": {
+          "accuracy": 0.91,
+          "precision": 0.90411,
+          "recall": 0.970588,
+          "f1": 0.93617,
+          "roc_auc": 0.95818,
+          "false_positive_rate": 0.21875,
+          "confusion_matrix": [
+            [
+              25,
+              7
+            ],
+            [
+              2,
+              66
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.9259259259259259,
+              "recall": 0.78125,
+              "f1-score": 0.847457627118644,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 0.9041095890410958,
+              "recall": 0.9705882352941176,
+              "f1-score": 0.9361702127659575,
+              "support": 68.0
+            },
+            "accuracy": 0.91,
+            "macro avg": {
+              "precision": 0.9150177574835109,
+              "recall": 0.8759191176470589,
+              "f1-score": 0.8918139199423007,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.9110908168442414,
+              "recall": 0.91,
+              "f1-score": 0.9077821853588172,
+              "support": 100.0
+            }
+          },
+          "train_time": 100.1066,
+          "infer_time": 315.1679,
+          "inference_time_per_1000_samples": 3151.678819,
+          "model_name": "QSVC",
+          "kernel_train_time_s": 100.1019,
+          "kernel_test_time_s": 315.1654
+        }
+      },
+      {
+        "seed": 777,
+        "SVM": {
+          "accuracy": 0.87,
+          "precision": 0.923077,
+          "recall": 0.882353,
+          "f1": 0.902256,
+          "roc_auc": 0.939338,
+          "false_positive_rate": 0.15625,
+          "confusion_matrix": [
+            [
+              27,
+              5
+            ],
+            [
+              8,
+              60
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.7714285714285715,
+              "recall": 0.84375,
+              "f1-score": 0.8059701492537313,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 0.9230769230769231,
+              "recall": 0.8823529411764706,
+              "f1-score": 0.9022556390977443,
+              "support": 68.0
+            },
+            "accuracy": 0.87,
+            "macro avg": {
+              "precision": 0.8472527472527474,
+              "recall": 0.8630514705882353,
+              "f1-score": 0.8541128941757379,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.8745494505494505,
+              "recall": 0.87,
+              "f1-score": 0.8714442823476601,
+              "support": 100.0
+            }
+          },
+          "train_time": 0.0091,
+          "infer_time": 0.0048,
+          "inference_time_per_1000_samples": 0.048169,
+          "model_name": "SVM (RBF)"
+        },
+        "Random_Forest": {
+          "accuracy": 0.87,
+          "precision": 0.966102,
+          "recall": 0.838235,
+          "f1": 0.897638,
+          "roc_auc": 0.967831,
+          "false_positive_rate": 0.0625,
+          "confusion_matrix": [
+            [
+              30,
+              2
+            ],
+            [
+              11,
+              57
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.7317073170731707,
+              "recall": 0.9375,
+              "f1-score": 0.821917808219178,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 0.9661016949152542,
+              "recall": 0.8382352941176471,
+              "f1-score": 0.8976377952755905,
+              "support": 68.0
+            },
+            "accuracy": 0.87,
+            "macro avg": {
+              "precision": 0.8489045059942124,
+              "recall": 0.8878676470588236,
+              "f1-score": 0.8597778017473843,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.8910954940057875,
+              "recall": 0.87,
+              "f1-score": 0.8734073994175385,
+              "support": 100.0
+            }
+          },
+          "train_time": 0.4019,
+          "infer_time": 0.0604,
+          "inference_time_per_1000_samples": 0.603732,
+          "model_name": "Random Forest"
+        },
+        "QSVC": {
+          "accuracy": 0.86,
+          "precision": 0.982143,
+          "recall": 0.808824,
+          "f1": 0.887097,
+          "roc_auc": 0.963695,
+          "false_positive_rate": 0.03125,
+          "confusion_matrix": [
+            [
+              31,
+              1
+            ],
+            [
+              13,
+              55
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.7045454545454546,
+              "recall": 0.96875,
+              "f1-score": 0.8157894736842105,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 0.9821428571428571,
+              "recall": 0.8088235294117647,
+              "f1-score": 0.8870967741935484,
+              "support": 68.0
+            },
+            "accuracy": 0.86,
+            "macro avg": {
+              "precision": 0.8433441558441559,
+              "recall": 0.8887867647058824,
+              "f1-score": 0.8514431239388794,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.8933116883116883,
+              "recall": 0.86,
+              "f1-score": 0.8642784380305603,
+              "support": 100.0
+            }
+          },
+          "train_time": 151.5072,
+          "infer_time": 282.0355,
+          "inference_time_per_1000_samples": 2820.355303,
+          "model_name": "QSVC",
+          "kernel_train_time_s": 151.5022,
+          "kernel_test_time_s": 282.0346
+        }
+      },
+      {
+        "seed": 999,
+        "SVM": {
+          "accuracy": 0.77,
+          "precision": 0.959184,
+          "recall": 0.691176,
+          "f1": 0.803419,
+          "roc_auc": 0.887868,
+          "false_positive_rate": 0.0625,
+          "confusion_matrix": [
+            [
+              30,
+              2
+            ],
+            [
+              21,
+              47
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.5882352941176471,
+              "recall": 0.9375,
+              "f1-score": 0.7228915662650602,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 0.9591836734693877,
+              "recall": 0.6911764705882353,
+              "f1-score": 0.8034188034188035,
+              "support": 68.0
+            },
+            "accuracy": 0.77,
+            "macro avg": {
+              "precision": 0.7737094837935174,
+              "recall": 0.8143382352941176,
+              "f1-score": 0.7631551848419318,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.8404801920768307,
+              "recall": 0.77,
+              "f1-score": 0.7776500875296057,
+              "support": 100.0
+            }
+          },
+          "train_time": 0.0039,
+          "infer_time": 0.0014,
+          "inference_time_per_1000_samples": 0.01426,
+          "model_name": "SVM (RBF)"
+        },
+        "Random_Forest": {
+          "accuracy": 0.85,
+          "precision": 0.981818,
+          "recall": 0.794118,
+          "f1": 0.878049,
+          "roc_auc": 0.934743,
+          "false_positive_rate": 0.03125,
+          "confusion_matrix": [
+            [
+              31,
+              1
+            ],
+            [
+              14,
+              54
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.6888888888888889,
+              "recall": 0.96875,
+              "f1-score": 0.8051948051948052,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 0.9818181818181818,
+              "recall": 0.7941176470588235,
+              "f1-score": 0.8780487804878049,
+              "support": 68.0
+            },
+            "accuracy": 0.85,
+            "macro avg": {
+              "precision": 0.8353535353535353,
+              "recall": 0.8814338235294117,
+              "f1-score": 0.841621792841305,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.888080808080808,
+              "recall": 0.85,
+              "f1-score": 0.8547355083940451,
+              "support": 100.0
+            }
+          },
+          "train_time": 0.1227,
+          "infer_time": 0.0147,
+          "inference_time_per_1000_samples": 0.147407,
+          "model_name": "Random Forest"
+        },
+        "QSVC": {
+          "accuracy": 0.79,
+          "precision": 0.960784,
+          "recall": 0.720588,
+          "f1": 0.823529,
+          "roc_auc": 0.889706,
+          "false_positive_rate": 0.0625,
+          "confusion_matrix": [
+            [
+              30,
+              2
+            ],
+            [
+              19,
+              49
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.6122448979591837,
+              "recall": 0.9375,
+              "f1-score": 0.7407407407407407,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 0.9607843137254902,
+              "recall": 0.7205882352941176,
+              "f1-score": 0.8235294117647058,
+              "support": 68.0
+            },
+            "accuracy": 0.79,
+            "macro avg": {
+              "precision": 0.7865146058423369,
+              "recall": 0.8290441176470589,
+              "f1-score": 0.7821350762527233,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.849251700680272,
+              "recall": 0.79,
+              "f1-score": 0.797037037037037,
+              "support": 100.0
+            }
+          },
+          "train_time": 157.0831,
+          "infer_time": 299.414,
+          "inference_time_per_1000_samples": 2994.139654,
+          "model_name": "QSVC",
+          "kernel_train_time_s": 157.0763,
+          "kernel_test_time_s": 299.4131
+        }
+      }
+    ],
+    "summary_mean_std": {
+      "SVM": {
+        "accuracy": {
+          "mean": 0.806,
+          "std": 0.072319
+        },
+        "precision": {
+          "mean": 0.931825,
+          "std": 0.037345
+        },
+        "recall": {
+          "mean": 0.77647,
+          "std": 0.138501
+        },
+        "f1": {
+          "mean": 0.839165,
+          "std": 0.076839
+        },
+        "roc_auc": {
+          "mean": 0.903998,
+          "std": 0.041445
+        },
+        "false_positive_rate": {
+          "mean": 0.13125,
+          "std": 0.086715
+        },
+        "train_time": {
+          "mean": 0.00896,
+          "std": 0.003578
+        },
+        "infer_time": {
+          "mean": 0.0045,
+          "std": 0.002242
+        }
+      },
+      "Random_Forest": {
+        "accuracy": {
+          "mean": 0.848,
+          "std": 0.022804
+        },
+        "precision": {
+          "mean": 0.947779,
+          "std": 0.03254
+        },
+        "recall": {
+          "mean": 0.823529,
+          "std": 0.045326
+        },
+        "f1": {
+          "mean": 0.880146,
+          "std": 0.020585
+        },
+        "roc_auc": {
+          "mean": 0.948897,
+          "std": 0.016669
+        },
+        "false_positive_rate": {
+          "mean": 0.1,
+          "std": 0.071261
+        },
+        "train_time": {
+          "mean": 0.45926,
+          "std": 0.296592
+        },
+        "infer_time": {
+          "mean": 0.0491,
+          "std": 0.020027
+        }
+      },
+      "QSVC": {
+        "accuracy": {
+          "mean": 0.838,
+          "std": 0.047645
+        },
+        "precision": {
+          "mean": 0.933497,
+          "std": 0.038164
+        },
+        "recall": {
+          "mean": 0.823529,
+          "std": 0.093008
+        },
+        "f1": {
+          "mean": 0.871686,
+          "std": 0.042839
+        },
+        "roc_auc": {
+          "mean": 0.912776,
+          "std": 0.052167
+        },
+        "false_positive_rate": {
+          "mean": 0.13125,
+          "std": 0.086715
+        },
+        "train_time": {
+          "mean": 139.25618,
+          "std": 24.748392
+        },
+        "infer_time": {
+          "mean": 314.3419,
+          "std": 24.217792
+        }
+      }
+    }
+  },
+  "experiment_D_feature_ablation": {
+    "seeds": [
+      42,
+      100,
+      2024,
+      777,
+      999
+    ],
+    "features": [
+      "sbytes",
+      "sload",
+      "is_ftp_login",
+      "smean"
+    ],
+    "per_seed_runs": [
+      {
+        "seed": 42,
+        "SVM": {
+          "accuracy": 0.73,
+          "precision": 0.918367,
+          "recall": 0.661765,
+          "f1": 0.769231,
+          "roc_auc": 0.819623,
+          "false_positive_rate": 0.125,
+          "confusion_matrix": [
+            [
+              28,
+              4
+            ],
+            [
+              23,
+              45
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.5490196078431373,
+              "recall": 0.875,
+              "f1-score": 0.6746987951807228,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 0.9183673469387755,
+              "recall": 0.6617647058823529,
+              "f1-score": 0.7692307692307693,
+              "support": 68.0
+            },
+            "accuracy": 0.73,
+            "macro avg": {
+              "precision": 0.7336934773909565,
+              "recall": 0.7683823529411764,
+              "f1-score": 0.721964782205746,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.8001760704281713,
+              "recall": 0.73,
+              "f1-score": 0.7389805375347543,
+              "support": 100.0
+            }
+          },
+          "train_time": 0.0029,
+          "infer_time": 0.0013,
+          "inference_time_per_1000_samples": 0.013369,
+          "model_name": "SVM (RBF)"
+        },
+        "Random_Forest": {
+          "accuracy": 0.85,
+          "precision": 0.949153,
+          "recall": 0.823529,
+          "f1": 0.88189,
+          "roc_auc": 0.930377,
+          "false_positive_rate": 0.09375,
+          "confusion_matrix": [
+            [
+              29,
+              3
+            ],
+            [
+              12,
+              56
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.7073170731707317,
+              "recall": 0.90625,
+              "f1-score": 0.7945205479452054,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 0.9491525423728814,
+              "recall": 0.8235294117647058,
+              "f1-score": 0.8818897637795275,
+              "support": 68.0
+            },
+            "accuracy": 0.85,
+            "macro avg": {
+              "precision": 0.8282348077718065,
+              "recall": 0.8648897058823529,
+              "f1-score": 0.8382051558623664,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.8717651922281934,
+              "recall": 0.85,
+              "f1-score": 0.8539316147125444,
+              "support": 100.0
+            }
+          },
+          "train_time": 0.1189,
+          "infer_time": 0.0151,
+          "inference_time_per_1000_samples": 0.15054,
+          "model_name": "Random Forest"
+        },
+        "QSVC": {
+          "accuracy": 0.73,
+          "precision": 0.872727,
+          "recall": 0.705882,
+          "f1": 0.780488,
+          "roc_auc": 0.819853,
+          "false_positive_rate": 0.21875,
+          "confusion_matrix": [
+            [
+              25,
+              7
+            ],
+            [
+              20,
+              48
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.5555555555555556,
+              "recall": 0.78125,
+              "f1-score": 0.6493506493506493,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 0.8727272727272727,
+              "recall": 0.7058823529411765,
+              "f1-score": 0.7804878048780488,
+              "support": 68.0
+            },
+            "accuracy": 0.73,
+            "macro avg": {
+              "precision": 0.7141414141414142,
+              "recall": 0.7435661764705883,
+              "f1-score": 0.7149192271143491,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.7712323232323232,
+              "recall": 0.73,
+              "f1-score": 0.7385239151092811,
+              "support": 100.0
+            }
+          },
+          "train_time": 37.5594,
+          "infer_time": 74.5768,
+          "inference_time_per_1000_samples": 745.767552,
+          "model_name": "QSVC",
+          "kernel_train_time_s": 37.5576,
+          "kernel_test_time_s": 74.5758
+        }
+      },
+      {
+        "seed": 100,
+        "SVM": {
+          "accuracy": 0.7,
+          "precision": 0.975,
+          "recall": 0.573529,
+          "f1": 0.722222,
+          "roc_auc": 0.693474,
+          "false_positive_rate": 0.03125,
+          "confusion_matrix": [
+            [
+              31,
+              1
+            ],
+            [
+              29,
+              39
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.5166666666666667,
+              "recall": 0.96875,
+              "f1-score": 0.6739130434782609,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 0.975,
+              "recall": 0.5735294117647058,
+              "f1-score": 0.7222222222222222,
+              "support": 68.0
+            },
+            "accuracy": 0.7,
+            "macro avg": {
+              "precision": 0.7458333333333333,
+              "recall": 0.7711397058823529,
+              "f1-score": 0.6980676328502415,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.8283333333333333,
+              "recall": 0.7,
+              "f1-score": 0.7067632850241545,
+              "support": 100.0
+            }
+          },
+          "train_time": 0.0036,
+          "infer_time": 0.0013,
+          "inference_time_per_1000_samples": 0.012989,
+          "model_name": "SVM (RBF)"
+        },
+        "Random_Forest": {
+          "accuracy": 0.72,
+          "precision": 0.857143,
+          "recall": 0.705882,
+          "f1": 0.774194,
+          "roc_auc": 0.876838,
+          "false_positive_rate": 0.25,
+          "confusion_matrix": [
+            [
+              24,
+              8
+            ],
+            [
+              20,
+              48
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.5454545454545454,
+              "recall": 0.75,
+              "f1-score": 0.631578947368421,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 0.8571428571428571,
+              "recall": 0.7058823529411765,
+              "f1-score": 0.7741935483870968,
+              "support": 68.0
+            },
+            "accuracy": 0.72,
+            "macro avg": {
+              "precision": 0.7012987012987013,
+              "recall": 0.7279411764705883,
+              "f1-score": 0.7028862478777589,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.7574025974025974,
+              "recall": 0.72,
+              "f1-score": 0.7285568760611204,
+              "support": 100.0
+            }
+          },
+          "train_time": 0.12,
+          "infer_time": 0.014,
+          "inference_time_per_1000_samples": 0.139683,
+          "model_name": "Random Forest"
+        },
+        "QSVC": {
+          "accuracy": 0.73,
+          "precision": 1.0,
+          "recall": 0.602941,
+          "f1": 0.752294,
+          "roc_auc": 0.821232,
+          "false_positive_rate": 0.0,
+          "confusion_matrix": [
+            [
+              32,
+              0
+            ],
+            [
+              27,
+              41
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.5423728813559322,
+              "recall": 1.0,
+              "f1-score": 0.7032967032967034,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 1.0,
+              "recall": 0.6029411764705882,
+              "f1-score": 0.7522935779816514,
+              "support": 68.0
+            },
+            "accuracy": 0.73,
+            "macro avg": {
+              "precision": 0.771186440677966,
+              "recall": 0.8014705882352942,
+              "f1-score": 0.7277951406391774,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.8535593220338983,
+              "recall": 0.73,
+              "f1-score": 0.7366145780824681,
+              "support": 100.0
+            }
+          },
+          "train_time": 37.2742,
+          "infer_time": 74.8164,
+          "inference_time_per_1000_samples": 748.163912,
+          "model_name": "QSVC",
+          "kernel_train_time_s": 37.2725,
+          "kernel_test_time_s": 74.8155
+        }
+      },
+      {
+        "seed": 2024,
+        "SVM": {
+          "accuracy": 0.73,
+          "precision": 1.0,
+          "recall": 0.602941,
+          "f1": 0.752294,
+          "roc_auc": 0.797335,
+          "false_positive_rate": 0.0,
+          "confusion_matrix": [
+            [
+              32,
+              0
+            ],
+            [
+              27,
+              41
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.5423728813559322,
+              "recall": 1.0,
+              "f1-score": 0.7032967032967034,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 1.0,
+              "recall": 0.6029411764705882,
+              "f1-score": 0.7522935779816514,
+              "support": 68.0
+            },
+            "accuracy": 0.73,
+            "macro avg": {
+              "precision": 0.771186440677966,
+              "recall": 0.8014705882352942,
+              "f1-score": 0.7277951406391774,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.8535593220338983,
+              "recall": 0.73,
+              "f1-score": 0.7366145780824681,
+              "support": 100.0
+            }
+          },
+          "train_time": 0.0029,
+          "infer_time": 0.0013,
+          "inference_time_per_1000_samples": 0.012864,
+          "model_name": "SVM (RBF)"
+        },
+        "Random_Forest": {
+          "accuracy": 0.79,
+          "precision": 0.927273,
+          "recall": 0.75,
+          "f1": 0.829268,
+          "roc_auc": 0.921415,
+          "false_positive_rate": 0.125,
+          "confusion_matrix": [
+            [
+              28,
+              4
+            ],
+            [
+              17,
+              51
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.6222222222222222,
+              "recall": 0.875,
+              "f1-score": 0.7272727272727273,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 0.9272727272727272,
+              "recall": 0.75,
+              "f1-score": 0.8292682926829268,
+              "support": 68.0
+            },
+            "accuracy": 0.79,
+            "macro avg": {
+              "precision": 0.7747474747474747,
+              "recall": 0.8125,
+              "f1-score": 0.7782705099778271,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.8296565656565655,
+              "recall": 0.79,
+              "f1-score": 0.7966297117516629,
+              "support": 100.0
+            }
+          },
+          "train_time": 0.1195,
+          "infer_time": 0.0143,
+          "inference_time_per_1000_samples": 0.142802,
+          "model_name": "Random Forest"
+        },
+        "QSVC": {
+          "accuracy": 0.74,
+          "precision": 0.956522,
+          "recall": 0.647059,
+          "f1": 0.77193,
+          "roc_auc": 0.798713,
+          "false_positive_rate": 0.0625,
+          "confusion_matrix": [
+            [
+              30,
+              2
+            ],
+            [
+              24,
+              44
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.5555555555555556,
+              "recall": 0.9375,
+              "f1-score": 0.6976744186046512,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 0.9565217391304348,
+              "recall": 0.6470588235294118,
+              "f1-score": 0.7719298245614035,
+              "support": 68.0
+            },
+            "accuracy": 0.74,
+            "macro avg": {
+              "precision": 0.7560386473429952,
+              "recall": 0.7922794117647058,
+              "f1-score": 0.7348021215830274,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.8282125603864734,
+              "recall": 0.74,
+              "f1-score": 0.7481680946552427,
+              "support": 100.0
+            }
+          },
+          "train_time": 31.6969,
+          "infer_time": 56.0025,
+          "inference_time_per_1000_samples": 560.024508,
+          "model_name": "QSVC",
+          "kernel_train_time_s": 31.6954,
+          "kernel_test_time_s": 56.0014
+        }
+      },
+      {
+        "seed": 777,
+        "SVM": {
+          "accuracy": 0.76,
+          "precision": 0.978261,
+          "recall": 0.661765,
+          "f1": 0.789474,
+          "roc_auc": 0.865349,
+          "false_positive_rate": 0.03125,
+          "confusion_matrix": [
+            [
+              31,
+              1
+            ],
+            [
+              23,
+              45
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.5740740740740741,
+              "recall": 0.96875,
+              "f1-score": 0.7209302325581395,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 0.9782608695652174,
+              "recall": 0.6617647058823529,
+              "f1-score": 0.7894736842105263,
+              "support": 68.0
+            },
+            "accuracy": 0.76,
+            "macro avg": {
+              "precision": 0.7761674718196457,
+              "recall": 0.8152573529411764,
+              "f1-score": 0.7552019583843329,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.8489210950080515,
+              "recall": 0.76,
+              "f1-score": 0.7675397796817626,
+              "support": 100.0
+            }
+          },
+          "train_time": 0.0023,
+          "infer_time": 0.0011,
+          "inference_time_per_1000_samples": 0.011231,
+          "model_name": "SVM (RBF)"
+        },
+        "Random_Forest": {
+          "accuracy": 0.82,
+          "precision": 0.946429,
+          "recall": 0.779412,
+          "f1": 0.854839,
+          "roc_auc": 0.905331,
+          "false_positive_rate": 0.09375,
+          "confusion_matrix": [
+            [
+              29,
+              3
+            ],
+            [
+              15,
+              53
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.6590909090909091,
+              "recall": 0.90625,
+              "f1-score": 0.7631578947368421,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 0.9464285714285714,
+              "recall": 0.7794117647058824,
+              "f1-score": 0.8548387096774194,
+              "support": 68.0
+            },
+            "accuracy": 0.82,
+            "macro avg": {
+              "precision": 0.8027597402597402,
+              "recall": 0.8428308823529411,
+              "f1-score": 0.8089983022071308,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.8544805194805195,
+              "recall": 0.82,
+              "f1-score": 0.8255008488964347,
+              "support": 100.0
+            }
+          },
+          "train_time": 0.0897,
+          "infer_time": 0.0104,
+          "inference_time_per_1000_samples": 0.103618,
+          "model_name": "Random Forest"
+        },
+        "QSVC": {
+          "accuracy": 0.75,
+          "precision": 0.938776,
+          "recall": 0.676471,
+          "f1": 0.786325,
+          "roc_auc": 0.840533,
+          "false_positive_rate": 0.09375,
+          "confusion_matrix": [
+            [
+              29,
+              3
+            ],
+            [
+              22,
+              46
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.5686274509803921,
+              "recall": 0.90625,
+              "f1-score": 0.6987951807228916,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 0.9387755102040817,
+              "recall": 0.6764705882352942,
+              "f1-score": 0.7863247863247863,
+              "support": 68.0
+            },
+            "accuracy": 0.75,
+            "macro avg": {
+              "precision": 0.7537014805922368,
+              "recall": 0.7913602941176471,
+              "f1-score": 0.742559983523839,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.820328131252501,
+              "recall": 0.75,
+              "f1-score": 0.75831531253218,
+              "support": 100.0
+            }
+          },
+          "train_time": 27.8127,
+          "infer_time": 55.9401,
+          "inference_time_per_1000_samples": 559.401018,
+          "model_name": "QSVC",
+          "kernel_train_time_s": 27.8111,
+          "kernel_test_time_s": 55.9393
+        }
+      },
+      {
+        "seed": 999,
+        "SVM": {
+          "accuracy": 0.71,
+          "precision": 0.897959,
+          "recall": 0.647059,
+          "f1": 0.752137,
+          "roc_auc": 0.782169,
+          "false_positive_rate": 0.15625,
+          "confusion_matrix": [
+            [
+              27,
+              5
+            ],
+            [
+              24,
+              44
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.5294117647058824,
+              "recall": 0.84375,
+              "f1-score": 0.6506024096385542,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 0.8979591836734694,
+              "recall": 0.6470588235294118,
+              "f1-score": 0.7521367521367521,
+              "support": 68.0
+            },
+            "accuracy": 0.71,
+            "macro avg": {
+              "precision": 0.7136854741896759,
+              "recall": 0.7454044117647058,
+              "f1-score": 0.7013695808876532,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.7800240096038416,
+              "recall": 0.71,
+              "f1-score": 0.7196457625373288,
+              "support": 100.0
+            }
+          },
+          "train_time": 0.0023,
+          "infer_time": 0.0011,
+          "inference_time_per_1000_samples": 0.010875,
+          "model_name": "SVM (RBF)"
+        },
+        "Random_Forest": {
+          "accuracy": 0.8,
+          "precision": 0.9,
+          "recall": 0.794118,
+          "f1": 0.84375,
+          "roc_auc": 0.869485,
+          "false_positive_rate": 0.1875,
+          "confusion_matrix": [
+            [
+              26,
+              6
+            ],
+            [
+              14,
+              54
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.65,
+              "recall": 0.8125,
+              "f1-score": 0.7222222222222222,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 0.9,
+              "recall": 0.7941176470588235,
+              "f1-score": 0.84375,
+              "support": 68.0
+            },
+            "accuracy": 0.8,
+            "macro avg": {
+              "precision": 0.775,
+              "recall": 0.8033088235294117,
+              "f1-score": 0.7829861111111112,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.82,
+              "recall": 0.8,
+              "f1-score": 0.8048611111111111,
+              "support": 100.0
+            }
+          },
+          "train_time": 0.0857,
+          "infer_time": 0.0104,
+          "inference_time_per_1000_samples": 0.103861,
+          "model_name": "Random Forest"
+        },
+        "QSVC": {
+          "accuracy": 0.67,
+          "precision": 0.857143,
+          "recall": 0.617647,
+          "f1": 0.717949,
+          "roc_auc": 0.68796,
+          "false_positive_rate": 0.21875,
+          "confusion_matrix": [
+            [
+              25,
+              7
+            ],
+            [
+              26,
+              42
+            ]
+          ],
+          "classification_report": {
+            "0": {
+              "precision": 0.49019607843137253,
+              "recall": 0.78125,
+              "f1-score": 0.6024096385542169,
+              "support": 32.0
+            },
+            "1": {
+              "precision": 0.8571428571428571,
+              "recall": 0.6176470588235294,
+              "f1-score": 0.717948717948718,
+              "support": 68.0
+            },
+            "accuracy": 0.67,
+            "macro avg": {
+              "precision": 0.6736694677871148,
+              "recall": 0.6994485294117647,
+              "f1-score": 0.6601791782514674,
+              "support": 100.0
+            },
+            "weighted avg": {
+              "precision": 0.739719887955182,
+              "recall": 0.67,
+              "f1-score": 0.6809762125424775,
+              "support": 100.0
+            }
+          },
+          "train_time": 27.6869,
+          "infer_time": 56.1083,
+          "inference_time_per_1000_samples": 561.083385,
+          "model_name": "QSVC",
+          "kernel_train_time_s": 27.6849,
+          "kernel_test_time_s": 56.1077
+        }
+      }
+    ],
+    "summary_mean_std": {
+      "SVM": {
+        "accuracy": {
+          "mean": 0.726,
+          "std": 0.023022
+        },
+        "precision": {
+          "mean": 0.953917,
+          "std": 0.043462
+        },
+        "recall": {
+          "mean": 0.629412,
+          "std": 0.03946
+        },
+        "f1": {
+          "mean": 0.757072,
+          "std": 0.024796
+        },
+        "roc_auc": {
+          "mean": 0.79159,
+          "std": 0.063196
+        },
+        "false_positive_rate": {
+          "mean": 0.06875,
+          "std": 0.067748
+        },
+        "train_time": {
+          "mean": 0.0028,
+          "std": 0.000539
+        },
+        "infer_time": {
+          "mean": 0.00122,
+          "std": 0.00011
+        }
+      },
+      "Random_Forest": {
+        "accuracy": {
+          "mean": 0.796,
+          "std": 0.04827
+        },
+        "precision": {
+          "mean": 0.916,
+          "std": 0.038315
+        },
+        "recall": {
+          "mean": 0.770588,
+          "std": 0.044847
+        },
+        "f1": {
+          "mean": 0.836788,
+          "std": 0.039947
+        },
+        "roc_auc": {
+          "mean": 0.900689,
+          "std": 0.02681
+        },
+        "false_positive_rate": {
+          "mean": 0.15,
+          "std": 0.067748
+        },
+        "train_time": {
+          "mean": 0.10676,
+          "std": 0.017461
+        },
+        "infer_time": {
+          "mean": 0.01284,
+          "std": 0.002263
+        }
+      },
+      "QSVC": {
+        "accuracy": {
+          "mean": 0.724,
+          "std": 0.031305
+        },
+        "precision": {
+          "mean": 0.925034,
+          "std": 0.059467
+        },
+        "recall": {
+          "mean": 0.65,
+          "std": 0.042111
+        },
+        "f1": {
+          "mean": 0.761797,
+          "std": 0.027688
+        },
+        "roc_auc": {
+          "mean": 0.793658,
+          "std": 0.060913
+        },
+        "false_positive_rate": {
+          "mean": 0.11875,
+          "std": 0.097328
+        },
+        "train_time": {
+          "mean": 32.40602,
+          "std": 4.85098
+        },
+        "infer_time": {
+          "mean": 63.48882,
+          "std": 10.231784
+        }
+      }
+    }
+  },
+  "stage4_ceiling_references": {
+    "svm_selected4_full_test": {
+      "experiment_name": "Experiment B - Classical Ceiling",
+      "model_name": "SVM (RBF)",
+      "feature_set": "selected_4",
+      "features": [
+        "sbytes",
+        "sload",
+        "sttl",
+        "smean"
+      ],
+      "selected_hyperparameters": {
+        "C": 5.0,
+        "gamma": "auto"
+      },
+      "accuracy": 0.853183,
+      "precision": 0.961201,
+      "recall": 0.81728,
+      "f1": 0.883417,
+      "roc_auc": 0.956869,
+      "false_positive_rate": 0.070304,
+      "confusion_matrix": [
+        [
+          52063,
+          3937
+        ],
+        [
+          21806,
+          97535
+        ]
+      ],
+      "classification_report": {
+        "0": {
+          "precision": 0.704801743627232,
+          "recall": 0.9296964285714285,
+          "f1-score": 0.8017771754614265,
+          "support": 56000.0
+        },
+        "1": {
+          "precision": 0.9612011195206559,
+          "recall": 0.8172798954257129,
+          "f1-score": 0.8834171901110894,
+          "support": 119341.0
+        },
+        "accuracy": 0.8531832258285285,
+        "macro avg": {
+          "precision": 0.833001431573944,
+          "recall": 0.8734881619985707,
+          "f1-score": 0.842597182786258,
+          "support": 175341.0
+        },
+        "weighted avg": {
+          "precision": 0.8793128843102275,
+          "recall": 0.8531832258285285,
+          "f1-score": 0.8573431924700293,
+          "support": 175341.0
+        }
+      },
+      "train_time": 344.2867,
+      "total_inference_time": 484.6984,
+      "inference_time_per_1000_samples": 2.764319,
+      "random_seed": 42,
+      "n_train_samples": 55945,
+      "n_test_samples": 175341
+    },
+    "rf_selected4_full_test": {
+      "experiment_name": "Experiment B - Classical Ceiling",
+      "model_name": "Random Forest",
+      "feature_set": "selected_4",
+      "features": [
+        "sbytes",
+        "sload",
+        "sttl",
+        "smean"
+      ],
+      "selected_hyperparameters": {
+        "max_depth": 20,
+        "min_samples_leaf": 2,
+        "n_estimators": 100
+      },
+      "accuracy": 0.898843,
+      "precision": 0.97884,
+      "recall": 0.870187,
+      "f1": 0.921321,
+      "roc_auc": 0.983318,
+      "false_positive_rate": 0.040089,
+      "confusion_matrix": [
+        [
+          53755,
+          2245
+        ],
+        [
+          15492,
+          103849
+        ]
+      ],
+      "classification_report": {
+        "0": {
+          "precision": 0.7762791167848426,
+          "recall": 0.9599107142857143,
+          "f1-score": 0.8583838335449152,
+          "support": 56000.0
+        },
+        "1": {
+          "precision": 0.978839519671235,
+          "recall": 0.8701871108839376,
+          "f1-score": 0.921321001619092,
+          "support": 119341.0
+        },
+        "accuracy": 0.8988428262642508,
+        "macro avg": {
+          "precision": 0.8775593182280388,
+          "recall": 0.915048912584826,
+          "f1-score": 0.8898524175820036,
+          "support": 175341.0
+        },
+        "weighted avg": {
+          "precision": 0.9141462502040939,
+          "recall": 0.8988428262642508,
+          "f1-score": 0.9012202755358948,
+          "support": 175341.0
+        }
+      },
+      "train_time": 3.2617,
+      "total_inference_time": 1.9958,
+      "inference_time_per_1000_samples": 0.011382,
+      "random_seed": 42,
+      "n_train_samples": 55945,
+      "n_test_samples": 175341
+    }
+  }
+}
