@@ -64,6 +64,6 @@
     "mean_abs_difference_raw": 0.00352,
     "historical_raw_min_eigenvalue": -0.00617,
     "historical_psd_min_eigenvalue": -0.0,
-    "shot_noise_source": "Historical Stage 5/7 used ComputeUncompute with StatevectorSampler(seed=42) which defaulted to 1024 finite measurement shots. This introduced ~1/sqrt(shots) = 0.03 statistical shot noise and negative eigenvalues in raw kernels. The Stage 7b exact statevector kernel evaluates analytical inner products |<psi_i|psi_j>|^2 directly in C^16 with 0 shot noise, yielding strictly PSD matrices and ~150x faster evaluation."
+    "shot_noise_source": "Historical Stage 5/7 used ComputeUncompute with StatevectorSampler(seed=42) which defaulted to 1024 finite measurement shots. This introduced ~1/sqrt(shots) = 0.03 statistical shot noise and negative eigenvalues in raw kernels. The Stage 7b exact statevector kernel evaluates analytical inner products |<psi_i|psi_j>|^2 directly in C^16 with 0 shot noise, yielding strictly PSD matrices. The reported 3,216.5x ratio compares analytical CPU-based statevector fidelity evaluation (0.000449s for N=20) against Qiskit circuit-level, finite-shot evaluation (1.4436s for N=20) for this 4-qubit example. This is a comparison between different classical evaluation pathways, not evidence of quantum computational advantage. The vestigial ~150x phrasing in earlier draft notes referred to unvectorized Statevector.from_instruction loops prior to vectorized tensor broadcasting and is superseded by the measured 3,216.5x classical-to-classical ratio."
   }
 }

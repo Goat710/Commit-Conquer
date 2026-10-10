@@ -5,7 +5,7 @@
 - **Hackathon:** Qiskit Fall Fest 2026
 - **Branch:** `main`
 - **Baseline Commit:** `b6033ec` (`Add CyberShield inference engine and calibration`)
-- **Objective:** Rigorously validate the quantum-kernel pipeline via exact statevector embeddings ($O(N+M)$ complexity), scale learning curve experiments up to $N_{\text{train}} \in [100, 500, 1000, 2000, 4000]$, run paired bootstrap statistical tests with classical baselines, audit calibration and disagreement, and draw honest conclusions with no unverified quantum advantage claims.
+- **Objective:** Rigorously validate the quantum-kernel pipeline via analytical statevector generation ($O(N+M)$ embedding cost) and BLAS fidelity kernel calculation ($O(N \cdot M \cdot 2^q)$ arithmetic), scale learning curve experiments up to $N_{\text{train}} \in [100, 500, 1000, 2000, 4000]$, run paired bootstrap statistical tests with classical baselines, audit calibration and disagreement, and draw honest conclusions with no unverified quantum advantage claims.
 
 ---
 
@@ -40,13 +40,13 @@
   - `python -m src.verify_kernel_v2` (exited 0)
 - **Key Findings:**
   - **Equivalence with `FidelityQuantumKernel`:** $\max |\Delta K| = 3.77 \times 10^{-12} \ll 10^{-6}$.
-  - **Invariants:** Diagonal strictly 1.0 ($\text{dev} = 0.0$), symmetry error 0.0, values in $[0.000216, 1.0]$, strictly positive semi-definite ($\lambda_{\min} = 0.0$).
+  - **Invariants:** Diagonal strictly 1.0 ($\text{dev} = 0.0$), symmetry error 0.0, values in $[0.000216, 1.0]$, strictly positive semi-definite ($\lambda_{\min} = +4.5 \times 10^{-16} > 0$).
   - **Comparison with Historical Stage 5/7 Kernel:**
     - Historical kernel used `StatevectorSampler(seed=42)` in `ComputeUncompute`, which defaulted to 1024 finite measurement shots. This introduced statistical shot noise ($\sim 1/\sqrt{1024} \approx 0.03$), causing max difference $\approx 0.020$ and negative eigenvalues (historical $\lambda_{\min} = -0.00617$).
     - Exact statevector kernel v2 evaluates analytical pure-state inner products directly with zero shot noise, guaranteeing strict PSD without heuristic projection.
   - **Runtime & Scalability:**
-    - For $N=20$: Exact v2 total time = 0.0173s (embedding: 0.0173s, matmul: 0.000064s) vs historical 1.144s ($66\times$ speedup).
-    - Eliminates $O(N \cdot M)$ quantum circuit execution overhead down to $O(N + M)$ statevector evaluations and sub-millisecond BLAS operations, unlocking feasible evaluation for $N \ge 4000$ and test sets $\ge 20000$.
+    - Analytical statevector generation avoids repeated circuit-level kernel evaluations. For fixed qubit count, embedding N and M samples requires work proportional to the sample counts. Constructing the complete dense N × M fidelity kernel still requires O(NM·2^q) arithmetic, where q is the number of qubits, and O(NM) storage for a materialized kernel.
+    - The reported 3,216.5x benchmark ratio on N=20 compares analytical CPU tensor evaluations (0.000449s) against Qiskit circuit-level, 1024-shot simulation (1.4436s); this is an empirical comparison between two classical evaluation pathways on CPU, not evidence of quantum computational advantage.
 - **Git Status:** Working tree clean except untracked Stage 7b files and protected data/cache. No commits yet (awaiting milestone / approval).
 
 ---
@@ -325,6 +325,32 @@
     - Saved comprehensive final research report to `results/stage7b_final_report.md`.
   - Formulated definitive scientific conclusions:
     - Distinctly separated measured results on fixed test subset ($N_{\text{test}} = 20,000$) from full-dataset benchmarks ($N = 175,341$).
-    - Analyzed computational scalability: dense quantum Gram matrix requires $54.17$ GB RAM at $N=82,332$, and dense rectangular test kernel requires $115.49$ GB RAM at $N=175,341$, showing that dense dual quantum SVMs face severe quadratic bottlenecks compared to $O(N \log N)$ classical tree models.
-    - Confirmed definitive ruling: **NO QUANTUM ADVANTAGE**. Classical Random Forest significantly and practically outperforms QSVC in discrimination, false alarm reduction, calibration, and computational scalability.
-- **Git Status:** Working tree clean on tracked files. All Stage 7b artifacts versioned with `_v2` naming. Ready for milestone commit or user inspection.
+    - Analyzed computational scalability: dense quantum Gram matrix requires $54.23$ GB ($50.50$ GiB) RAM at $N=82,332$, and dense rectangular test kernel requires $115.49$ GB ($107.56$ GiB) RAM at $N=175,341$, showing that dense dual quantum SVMs face severe quadratic bottlenecks compared to $O(N \log N)$ classical tree models.
+    - Confirmed definitive ruling: **No quantum advantage was demonstrated under the tested conditions.** Classical Random Forest significantly and practically outperforms QSVC in discrimination, false alarm reduction, calibration, and computational scalability.
+- **Git Status:** Working tree clean on tracked files. Committed as `395cc5f`.
+
+---
+
+### Corrective Reporting Patch — Post-Audit Amendments
+- **Timestamp:** 2026-10-10
+- **Context:** Post-audit documentation and analysis-integrity patch following independent forensic audit of commit `395cc5f` (parent `b6033ec`).
+- **Safety Standard:** Read-only regarding models and predictions; zero retraining; no history rewriting of `395cc5f`; minimal text corrections only.
+- **Actions Completed:**
+  1. **Algorithmic Complexity Correction:**
+     - Amended all references that loosely claimed $O(N+M)$ dense kernel computation.
+     - Mandated exact wording applied: *"Analytical statevector generation avoids repeated circuit-level kernel evaluations. For fixed qubit count, embedding N and M samples requires work proportional to the sample counts. Constructing the complete dense N × M fidelity kernel still requires O(NM·2^q) arithmetic, where q is the number of qubits, and O(NM) storage for a materialized kernel."*
+  2. **Benchmark Ratio Qualification:**
+     - Qualified the 3,216.5x ratio in `results/quantum_kernel_verification_v2.json` and reports as comparing analytical CPU tensor simulation (0.000449s for N=20) against Qiskit circuit-level, finite-shot simulation (1.4436s for N=20 with 1,024 shots) for the tested 4-qubit example.
+     - Documented that this represents a comparison between two classical evaluation pathways on CPU, not evidence of quantum computational advantage.
+     - Resolved the vestigial mention of "~150x" in `results/quantum_kernel_verification_v2.json` as an unvectorized working note superseded by recorded artifact values.
+  3. **Single-Seed vs Cross-Seed Disambiguation:**
+     - Clearly labeled that McNemar tests and paired bootstrap confidence intervals were evaluated strictly on the single-seed prediction artifact (`results/predictions_v2.csv`, Seed 42, $N=20,000$).
+     - Explicitly documented the 5-seed accuracy means at $N_{\text{train}} = 4,000$: QSVC = $0.8905 \pm 0.0299$, Random Forest = $0.8896 \pm 0.0042$ (difference: $+0.0009$).
+     - Clarified that the Seed 42 single-seed accuracy deficit ($-0.0586$) was driven by QSVC cross-seed variance on that specific seed and must not be described as the cross-seed average deficit.
+     - Retained and highlighted the consistent cross-seed superiority of Random Forest in ROC-AUC ($0.9823 \pm 0.0009$ vs $0.9526 \pm 0.0031$) and False Positive Rate ($4.11\% \pm 0.49\%$ vs $16.50\% \pm 3.72\%$).
+  4. **Memory Unit Standardization:**
+     - Standardized memory reporting across reports to explicitly state both decimal GB ($10^9$ bytes) and binary GiB ($2^{30}$ bytes): $54.23$ GB / $50.50$ GiB for full training Gram matrix ($82,332 \times 82,332$) and $115.49$ GB / $107.56$ GiB for full test kernel ($175,341 \times 82,332$).
+     - Explicitly distinguished theoretical array storage from peak working memory and solver overhead.
+  5. **Standardized Scientific Ruling:**
+     - Formally updated the ruling to: *"No quantum advantage was demonstrated under the tested conditions."*
+- **Git Status:** Pending user review of exact diff and file list before staging or committing.
