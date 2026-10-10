@@ -17,12 +17,30 @@ Thumbs.db
 .vscode/
 .idea/
 
+# Environment & secrets
+.env
+.env.*
+*.pem
+*.key
+
 # Streamlit
 .streamlit/
 
-# Project data
-data/*.csv
+# Project datasets & raw data
+data/
+data/**/*.csv
+
+# Generated large prediction artifacts (>50MB)
+results/stage8e_predictions.csv
+
+# Model & kernel caches
+models/cache_v2/
+models/*.npy
+*.npy
 
 # Test / tool caches
 .pytest_cache/
+
+# Temporary files & terminal dumps
+hell
 

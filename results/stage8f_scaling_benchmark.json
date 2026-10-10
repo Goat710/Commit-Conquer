@@ -1,0 +1,1064 @@
+{
+  "metadata": {
+    "stage": "8F-B",
+    "experiment": "Quantum Simulation Scaling and Kernel Approximation",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python_version": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+    "sample_size": 100,
+    "sample_seed": 42,
+    "train_pool_size": 4000,
+    "eval_row_indices": [
+      4049,
+      74282,
+      25306,
+      26245,
+      19375,
+      82280,
+      12395,
+      59949,
+      42893,
+      82270,
+      62906,
+      79513,
+      57260,
+      40171,
+      48182,
+      18612,
+      29895,
+      17983,
+      20214,
+      75212,
+      28584,
+      46524,
+      33334,
+      33464,
+      58145,
+      64716,
+      40798,
+      5696,
+      13431,
+      25871,
+      43348,
+      28699,
+      621,
+      19081,
+      34308,
+      14905,
+      26750,
+      77086,
+      13286,
+      24600,
+      69353,
+      56019,
+      65298,
+      20400,
+      30004,
+      79028,
+      14041,
+      15752,
+      73997,
+      66343,
+      59986,
+      27961,
+      76100,
+      62542,
+      5903,
+      38377,
+      42432,
+      4475,
+      3981,
+      13843,
+      24820,
+      18955,
+      34850,
+      9833,
+      24565,
+      70592,
+      41926,
+      25243,
+      76291,
+      32056,
+      22361,
+      8943,
+      86,
+      26757,
+      81825,
+      56105,
+      41925,
+      57142,
+      44683,
+      42332,
+      70223,
+      45634,
+      44632,
+      16561,
+      16928,
+      72401,
+      7170,
+      26170,
+      2717,
+      5195,
+      70591,
+      36261,
+      8793,
+      30987,
+      59973,
+      26999,
+      38093,
+      65833,
+      3863,
+      64647
+    ],
+    "eval_dataset_ids": [
+      4050,
+      74283,
+      25307,
+      26246,
+      19376,
+      82281,
+      12396,
+      59950,
+      42894,
+      82271,
+      62907,
+      79514,
+      57261,
+      40172,
+      48183,
+      18613,
+      29896,
+      17984,
+      20215,
+      75213,
+      28585,
+      46525,
+      33335,
+      33465,
+      58146,
+      64717,
+      40799,
+      5697,
+      13432,
+      25872,
+      43349,
+      28700,
+      622,
+      19082,
+      34309,
+      14906,
+      26751,
+      77087,
+      13287,
+      24601,
+      69354,
+      56020,
+      65299,
+      20401,
+      30005,
+      79029,
+      14042,
+      15753,
+      73998,
+      66344,
+      59987,
+      27962,
+      76101,
+      62543,
+      5904,
+      38378,
+      42433,
+      4476,
+      3982,
+      13844,
+      24821,
+      18956,
+      34851,
+      9834,
+      24566,
+      70593,
+      41927,
+      25244,
+      76292,
+      32057,
+      22362,
+      8944,
+      87,
+      26758,
+      81826,
+      56106,
+      41926,
+      57143,
+      44684,
+      42333,
+      70224,
+      45635,
+      44633,
+      16562,
+      16929,
+      72402,
+      7171,
+      26171,
+      2718,
+      5196,
+      70592,
+      36262,
+      8794,
+      30988,
+      59974,
+      27000,
+      38094,
+      65834,
+      3864,
+      64648
+    ],
+    "qubit_counts_evaluated": [
+      4,
+      6,
+      8,
+      10,
+      12,
+      14,
+      16
+    ],
+    "landmark_budgets_evaluated": [
+      5,
+      10,
+      20,
+      50,
+      100
+    ],
+    "circuit_architecture": {
+      "name": "ZZFeatureMap",
+      "reps": 2,
+      "entanglement": "linear",
+      "rotation_scaling": "MinMaxScaler(0, pi) fitted on N_train=4,000"
+    },
+    "scientific_boundary": "These experiments measure classical simulation cost and classical approximation of a small quantum kernel on CPU. They do not demonstrate quantum speedup, quantum advantage, or general classical intractability. No physical QPU hardware was used."
+  },
+  "experiment_a_simulation_scaling": {
+    "q_4": {
+      "qubit_count": 4,
+      "hilbert_dim": 16,
+      "features": [
+        "sbytes",
+        "sload",
+        "sttl",
+        "smean"
+      ],
+      "sample_count": 100,
+      "dtype": "complex128",
+      "circuit_config": {
+        "feature_map": "zz_feature_map",
+        "reps": 2,
+        "entanglement": "linear",
+        "num_qubits": 4,
+        "num_parameters": 4
+      },
+      "status": "SUCCESS",
+      "timing": {
+        "embedding_time_s": 0.33214,
+        "kernel_construction_time_s": 0.00107,
+        "total_time_s": 0.33321,
+        "time_per_sample_ms": 3.321,
+        "fast_vectorized_embedding_s": 0.00201
+      },
+      "memory": {
+        "estimated_demand_bytes": 10616960,
+        "estimated_demand_mb": 10.13,
+        "measured_peak_incremental_bytes": 575334,
+        "measured_peak_incremental_mb": 0.5487,
+        "statevector_buffer_bytes": 25600,
+        "statevector_buffer_mb": 0.0244,
+        "measurement_method": "tracemalloc_incremental_heap",
+        "measurement_limitations": "Measures incremental heap allocations by Python and NumPy; does not capture OS-level page cache or C runtime buffers."
+      },
+      "numerical_validation": {
+        "is_square": true,
+        "is_finite": true,
+        "max_diagonal_error": 0.0,
+        "max_symmetry_error": 0.0
+      }
+    },
+    "q_6": {
+      "qubit_count": 6,
+      "hilbert_dim": 64,
+      "features": [
+        "sbytes",
+        "sload",
+        "sttl",
+        "smean",
+        "ackdat",
+        "ct_dst_ltm"
+      ],
+      "sample_count": 100,
+      "dtype": "complex128",
+      "circuit_config": {
+        "feature_map": "zz_feature_map",
+        "reps": 2,
+        "entanglement": "linear",
+        "num_qubits": 6,
+        "num_parameters": 6
+      },
+      "status": "SUCCESS",
+      "timing": {
+        "embedding_time_s": 0.48317,
+        "kernel_construction_time_s": 0.01884,
+        "total_time_s": 0.502,
+        "time_per_sample_ms": 4.832,
+        "fast_vectorized_embedding_s": null
+      },
+      "memory": {
+        "estimated_demand_bytes": 10770560,
+        "estimated_demand_mb": 10.27,
+        "measured_peak_incremental_bytes": 636956,
+        "measured_peak_incremental_mb": 0.6074,
+        "statevector_buffer_bytes": 102400,
+        "statevector_buffer_mb": 0.0977,
+        "measurement_method": "tracemalloc_incremental_heap",
+        "measurement_limitations": "Measures incremental heap allocations by Python and NumPy; does not capture OS-level page cache or C runtime buffers."
+      },
+      "numerical_validation": {
+        "is_square": true,
+        "is_finite": true,
+        "max_diagonal_error": 0.0,
+        "max_symmetry_error": 0.0
+      }
+    },
+    "q_8": {
+      "qubit_count": 8,
+      "hilbert_dim": 256,
+      "features": [
+        "sbytes",
+        "sload",
+        "sttl",
+        "smean",
+        "ackdat",
+        "ct_dst_ltm",
+        "ct_dst_sport_ltm",
+        "ct_dst_src_ltm"
+      ],
+      "sample_count": 100,
+      "dtype": "complex128",
+      "circuit_config": {
+        "feature_map": "zz_feature_map",
+        "reps": 2,
+        "entanglement": "linear",
+        "num_qubits": 8,
+        "num_parameters": 8
+      },
+      "status": "SUCCESS",
+      "timing": {
+        "embedding_time_s": 0.712,
+        "kernel_construction_time_s": 0.00367,
+        "total_time_s": 0.71567,
+        "time_per_sample_ms": 7.12,
+        "fast_vectorized_embedding_s": null
+      },
+      "memory": {
+        "estimated_demand_bytes": 11384960,
+        "estimated_demand_mb": 10.86,
+        "measured_peak_incremental_bytes": 963046,
+        "measured_peak_incremental_mb": 0.9184,
+        "statevector_buffer_bytes": 409600,
+        "statevector_buffer_mb": 0.3906,
+        "measurement_method": "tracemalloc_incremental_heap",
+        "measurement_limitations": "Measures incremental heap allocations by Python and NumPy; does not capture OS-level page cache or C runtime buffers."
+      },
+      "numerical_validation": {
+        "is_square": true,
+        "is_finite": true,
+        "max_diagonal_error": 0.0,
+        "max_symmetry_error": 0.0
+      }
+    },
+    "q_10": {
+      "qubit_count": 10,
+      "hilbert_dim": 1024,
+      "features": [
+        "sbytes",
+        "sload",
+        "sttl",
+        "smean",
+        "ackdat",
+        "ct_dst_ltm",
+        "ct_dst_sport_ltm",
+        "ct_dst_src_ltm",
+        "ct_flw_http_mthd",
+        "ct_ftp_cmd"
+      ],
+      "sample_count": 100,
+      "dtype": "complex128",
+      "circuit_config": {
+        "feature_map": "zz_feature_map",
+        "reps": 2,
+        "entanglement": "linear",
+        "num_qubits": 10,
+        "num_parameters": 10
+      },
+      "status": "SUCCESS",
+      "timing": {
+        "embedding_time_s": 0.93364,
+        "kernel_construction_time_s": 0.01001,
+        "total_time_s": 0.94366,
+        "time_per_sample_ms": 9.336,
+        "fast_vectorized_embedding_s": null
+      },
+      "memory": {
+        "estimated_demand_bytes": 13842560,
+        "estimated_demand_mb": 13.2,
+        "measured_peak_incremental_bytes": 2213674,
+        "measured_peak_incremental_mb": 2.1111,
+        "statevector_buffer_bytes": 1638400,
+        "statevector_buffer_mb": 1.5625,
+        "measurement_method": "tracemalloc_incremental_heap",
+        "measurement_limitations": "Measures incremental heap allocations by Python and NumPy; does not capture OS-level page cache or C runtime buffers."
+      },
+      "numerical_validation": {
+        "is_square": true,
+        "is_finite": true,
+        "max_diagonal_error": 0.0,
+        "max_symmetry_error": 0.0
+      }
+    },
+    "q_12": {
+      "qubit_count": 12,
+      "hilbert_dim": 4096,
+      "features": [
+        "sbytes",
+        "sload",
+        "sttl",
+        "smean",
+        "ackdat",
+        "ct_dst_ltm",
+        "ct_dst_sport_ltm",
+        "ct_dst_src_ltm",
+        "ct_flw_http_mthd",
+        "ct_ftp_cmd",
+        "ct_src_dport_ltm",
+        "ct_src_ltm"
+      ],
+      "sample_count": 100,
+      "dtype": "complex128",
+      "circuit_config": {
+        "feature_map": "zz_feature_map",
+        "reps": 2,
+        "entanglement": "linear",
+        "num_qubits": 12,
+        "num_parameters": 12
+      },
+      "status": "SUCCESS",
+      "timing": {
+        "embedding_time_s": 1.35083,
+        "kernel_construction_time_s": 0.01055,
+        "total_time_s": 1.36137,
+        "time_per_sample_ms": 13.508,
+        "fast_vectorized_embedding_s": null
+      },
+      "memory": {
+        "estimated_demand_bytes": 23672960,
+        "estimated_demand_mb": 22.58,
+        "measured_peak_incremental_bytes": 7321660,
+        "measured_peak_incremental_mb": 6.9825,
+        "statevector_buffer_bytes": 6553600,
+        "statevector_buffer_mb": 6.25,
+        "measurement_method": "tracemalloc_incremental_heap",
+        "measurement_limitations": "Measures incremental heap allocations by Python and NumPy; does not capture OS-level page cache or C runtime buffers."
+      },
+      "numerical_validation": {
+        "is_square": true,
+        "is_finite": true,
+        "max_diagonal_error": 0.0,
+        "max_symmetry_error": 0.0
+      }
+    },
+    "q_14": {
+      "qubit_count": 14,
+      "hilbert_dim": 16384,
+      "features": [
+        "sbytes",
+        "sload",
+        "sttl",
+        "smean",
+        "ackdat",
+        "ct_dst_ltm",
+        "ct_dst_sport_ltm",
+        "ct_dst_src_ltm",
+        "ct_flw_http_mthd",
+        "ct_ftp_cmd",
+        "ct_src_dport_ltm",
+        "ct_src_ltm",
+        "ct_srv_dst",
+        "ct_srv_src"
+      ],
+      "sample_count": 100,
+      "dtype": "complex128",
+      "circuit_config": {
+        "feature_map": "zz_feature_map",
+        "reps": 2,
+        "entanglement": "linear",
+        "num_qubits": 14,
+        "num_parameters": 14
+      },
+      "status": "SUCCESS",
+      "timing": {
+        "embedding_time_s": 3.37909,
+        "kernel_construction_time_s": 0.04443,
+        "total_time_s": 3.42351,
+        "time_per_sample_ms": 33.791,
+        "fast_vectorized_embedding_s": null
+      },
+      "memory": {
+        "estimated_demand_bytes": 62994560,
+        "estimated_demand_mb": 60.08,
+        "measured_peak_incremental_bytes": 27910860,
+        "measured_peak_incremental_mb": 26.6179,
+        "statevector_buffer_bytes": 26214400,
+        "statevector_buffer_mb": 25.0,
+        "measurement_method": "tracemalloc_incremental_heap",
+        "measurement_limitations": "Measures incremental heap allocations by Python and NumPy; does not capture OS-level page cache or C runtime buffers."
+      },
+      "numerical_validation": {
+        "is_square": true,
+        "is_finite": true,
+        "max_diagonal_error": 0.0,
+        "max_symmetry_error": 0.0
+      }
+    },
+    "q_16": {
+      "qubit_count": 16,
+      "hilbert_dim": 65536,
+      "features": [
+        "sbytes",
+        "sload",
+        "sttl",
+        "smean",
+        "ackdat",
+        "ct_dst_ltm",
+        "ct_dst_sport_ltm",
+        "ct_dst_src_ltm",
+        "ct_flw_http_mthd",
+        "ct_ftp_cmd",
+        "ct_src_dport_ltm",
+        "ct_src_ltm",
+        "ct_srv_dst",
+        "ct_srv_src",
+        "ct_state_ttl",
+        "dbytes"
+      ],
+      "sample_count": 100,
+      "dtype": "complex128",
+      "circuit_config": {
+        "feature_map": "zz_feature_map",
+        "reps": 2,
+        "entanglement": "linear",
+        "num_qubits": 16,
+        "num_parameters": 16
+      },
+      "status": "SUCCESS",
+      "timing": {
+        "embedding_time_s": 25.13021,
+        "kernel_construction_time_s": 0.10555,
+        "total_time_s": 25.23575,
+        "time_per_sample_ms": 251.302,
+        "fast_vectorized_embedding_s": null
+      },
+      "memory": {
+        "estimated_demand_bytes": 220280960,
+        "estimated_demand_mb": 210.08,
+        "measured_peak_incremental_bytes": 110429584,
+        "measured_peak_incremental_mb": 105.3139,
+        "statevector_buffer_bytes": 104857600,
+        "statevector_buffer_mb": 100.0,
+        "measurement_method": "tracemalloc_incremental_heap",
+        "measurement_limitations": "Measures incremental heap allocations by Python and NumPy; does not capture OS-level page cache or C runtime buffers."
+      },
+      "numerical_validation": {
+        "is_square": true,
+        "is_finite": true,
+        "max_diagonal_error": 0.0,
+        "max_symmetry_error": 0.0
+      }
+    }
+  },
+  "experiment_b_nystroem_approximation": {
+    "reference_kernel": {
+      "kernel_definition": "K(x_i, x_j) = |<psi(x_i)|psi(x_j)>|^2",
+      "dimension": [
+        100,
+        100
+      ],
+      "construction_time_s": 0.00168,
+      "peak_memory_bytes": 426584,
+      "peak_memory_mb": 0.4068,
+      "numerical_properties": {
+        "is_symmetric": true,
+        "max_symmetry_error": 0.0,
+        "is_diagonal_unit": true,
+        "is_finite": true,
+        "minimum_eigenvalue": -1.1823976267124855e-14,
+        "maximum_eigenvalue": 62.87178192816283,
+        "condition_number": Infinity,
+        "frobenius_norm": 66.20795329176788,
+        "spectral_norm": 62.8717819281628,
+        "psd_interpretation": "Minimum eigenvalue is -1.18e-14, which is floating-point roundoff from 0.0. Matrix is positive semi-definite within numerical precision."
+      }
+    },
+    "landmark_approximations": {
+      "m_5": {
+        "landmark_budget": 5,
+        "is_full_landmark_boundary": false,
+        "landmark_indices": [
+          44,
+          45,
+          53,
+          70,
+          83
+        ],
+        "matrix_dimensions": {
+          "C_shape": [
+            100,
+            5
+          ],
+          "W_shape": [
+            5,
+            5
+          ],
+          "K_hat_shape": [
+            100,
+            100
+          ]
+        },
+        "conditioning": {
+          "min_eigenvalue_W": 2.5610479953514813e-06,
+          "max_eigenvalue_W": 3.945894072084813,
+          "condition_number_W": 1540734.1366686388,
+          "pseudoinverse_method": "np.linalg.pinv",
+          "rcond_tolerance": 1e-15,
+          "regularization_added": null
+        },
+        "approximation_errors": {
+          "relative_frobenius_error": 0.152308,
+          "relative_spectral_error": 0.127724,
+          "absolute_frobenius_error": 10.083979,
+          "absolute_spectral_error": 8.030261
+        },
+        "timing": {
+          "landmark_selection_time_s": 3.9e-05,
+          "kernel_evaluation_time_s": 0.000254,
+          "pseudoinverse_time_s": 0.000344,
+          "matrix_multiplication_time_s": 5e-05,
+          "total_end_to_end_reconstruction_time_s": 0.000688,
+          "error_validation_time_s": 0.001811,
+          "reference_exact_time_s": 0.001677,
+          "measured_speedup_ratio": 2.4392,
+          "speedup_interpretation": "At N=100 samples, Nystr\u00f6m total end-to-end time is 0.69 ms vs 1.68 ms for full kernel (speedup 2.44x). At small sample sizes, SVD pseudoinverse and matrix allocations introduce overhead; no practical wall-clock speedup occurs at N=100."
+        },
+        "memory": {
+          "measured_peak_incremental_bytes": 91720,
+          "measured_peak_incremental_mb": 0.0875
+        },
+        "validation": {
+          "is_finite": true,
+          "min_diagonal_entry": 0.004723883094823886,
+          "max_diagonal_entry": 1.0000000000028957
+        }
+      },
+      "m_10": {
+        "landmark_budget": 10,
+        "is_full_landmark_boundary": false,
+        "landmark_indices": [
+          0,
+          10,
+          22,
+          39,
+          44,
+          45,
+          53,
+          70,
+          80,
+          83
+        ],
+        "matrix_dimensions": {
+          "C_shape": [
+            100,
+            10
+          ],
+          "W_shape": [
+            10,
+            10
+          ],
+          "K_hat_shape": [
+            100,
+            100
+          ]
+        },
+        "conditioning": {
+          "min_eigenvalue_W": 1.7568847126580735e-09,
+          "max_eigenvalue_W": 5.640971513860547,
+          "condition_number_W": 3210780692.2208667,
+          "pseudoinverse_method": "np.linalg.pinv",
+          "rcond_tolerance": 1e-15,
+          "regularization_added": null
+        },
+        "approximation_errors": {
+          "relative_frobenius_error": 0.067866,
+          "relative_spectral_error": 0.0572,
+          "absolute_frobenius_error": 4.493257,
+          "absolute_spectral_error": 3.596248
+        },
+        "timing": {
+          "landmark_selection_time_s": 1.4e-05,
+          "kernel_evaluation_time_s": 0.000181,
+          "pseudoinverse_time_s": 0.000254,
+          "matrix_multiplication_time_s": 5e-05,
+          "total_end_to_end_reconstruction_time_s": 0.000499,
+          "error_validation_time_s": 0.001702,
+          "reference_exact_time_s": 0.001677,
+          "measured_speedup_ratio": 3.3578,
+          "speedup_interpretation": "At N=100 samples, Nystr\u00f6m total end-to-end time is 0.50 ms vs 1.68 ms for full kernel (speedup 3.36x). At small sample sizes, SVD pseudoinverse and matrix allocations introduce overhead; no practical wall-clock speedup occurs at N=100."
+        },
+        "memory": {
+          "measured_peak_incremental_bytes": 102200,
+          "measured_peak_incremental_mb": 0.0975
+        },
+        "validation": {
+          "is_finite": true,
+          "min_diagonal_entry": 0.011581139315482259,
+          "max_diagonal_entry": 1.0000000632434463
+        }
+      },
+      "m_20": {
+        "landmark_budget": 20,
+        "is_full_landmark_boundary": false,
+        "landmark_indices": [
+          0,
+          4,
+          10,
+          12,
+          18,
+          22,
+          30,
+          31,
+          33,
+          39,
+          44,
+          45,
+          53,
+          70,
+          73,
+          76,
+          77,
+          80,
+          83,
+          90
+        ],
+        "matrix_dimensions": {
+          "C_shape": [
+            100,
+            20
+          ],
+          "W_shape": [
+            20,
+            20
+          ],
+          "K_hat_shape": [
+            100,
+            100
+          ]
+        },
+        "conditioning": {
+          "min_eigenvalue_W": -1.6583954138999565e-16,
+          "max_eigenvalue_W": 13.417885135495734,
+          "condition_number_W": Infinity,
+          "pseudoinverse_method": "np.linalg.pinv",
+          "rcond_tolerance": 1e-15,
+          "regularization_added": null
+        },
+        "approximation_errors": {
+          "relative_frobenius_error": 0.055864,
+          "relative_spectral_error": 0.057075,
+          "absolute_frobenius_error": 3.69862,
+          "absolute_spectral_error": 3.588378
+        },
+        "timing": {
+          "landmark_selection_time_s": 1.2e-05,
+          "kernel_evaluation_time_s": 0.000189,
+          "pseudoinverse_time_s": 0.000319,
+          "matrix_multiplication_time_s": 5.3e-05,
+          "total_end_to_end_reconstruction_time_s": 0.000573,
+          "error_validation_time_s": 0.001253,
+          "reference_exact_time_s": 0.001677,
+          "measured_speedup_ratio": 2.9296,
+          "speedup_interpretation": "At N=100 samples, Nystr\u00f6m total end-to-end time is 0.57 ms vs 1.68 ms for full kernel (speedup 2.93x). At small sample sizes, SVD pseudoinverse and matrix allocations introduce overhead; no practical wall-clock speedup occurs at N=100."
+        },
+        "memory": {
+          "measured_peak_incremental_bytes": 125544,
+          "measured_peak_incremental_mb": 0.1197
+        },
+        "validation": {
+          "is_finite": true,
+          "min_diagonal_entry": 0.15299882118318892,
+          "max_diagonal_entry": 1.000649576547563
+        }
+      },
+      "m_50": {
+        "landmark_budget": 50,
+        "is_full_landmark_boundary": false,
+        "landmark_indices": [
+          0,
+          4,
+          5,
+          7,
+          9,
+          10,
+          11,
+          12,
+          13,
+          15,
+          16,
+          18,
+          19,
+          22,
+          25,
+          26,
+          27,
+          28,
+          30,
+          31,
+          33,
+          34,
+          35,
+          39,
+          40,
+          42,
+          44,
+          45,
+          47,
+          49,
+          53,
+          55,
+          62,
+          65,
+          66,
+          69,
+          70,
+          72,
+          73,
+          76,
+          77,
+          80,
+          81,
+          83,
+          85,
+          88,
+          90,
+          93,
+          95,
+          96
+        ],
+        "matrix_dimensions": {
+          "C_shape": [
+            100,
+            50
+          ],
+          "W_shape": [
+            50,
+            50
+          ],
+          "K_hat_shape": [
+            100,
+            100
+          ]
+        },
+        "conditioning": {
+          "min_eigenvalue_W": -2.2819840140632104e-15,
+          "max_eigenvalue_W": 30.69873713000132,
+          "condition_number_W": Infinity,
+          "pseudoinverse_method": "np.linalg.pinv",
+          "rcond_tolerance": 1e-15,
+          "regularization_added": null
+        },
+        "approximation_errors": {
+          "relative_frobenius_error": 0.005726,
+          "relative_spectral_error": 0.006004,
+          "absolute_frobenius_error": 0.379097,
+          "absolute_spectral_error": 0.377475
+        },
+        "timing": {
+          "landmark_selection_time_s": 1.3e-05,
+          "kernel_evaluation_time_s": 0.000411,
+          "pseudoinverse_time_s": 0.001867,
+          "matrix_multiplication_time_s": 9.7e-05,
+          "total_end_to_end_reconstruction_time_s": 0.002388,
+          "error_validation_time_s": 0.001224,
+          "reference_exact_time_s": 0.001677,
+          "measured_speedup_ratio": 0.7024,
+          "speedup_interpretation": "At N=100 samples, Nystr\u00f6m total end-to-end time is 2.39 ms vs 1.68 ms for full kernel (speedup 0.70x). At small sample sizes, SVD pseudoinverse and matrix allocations introduce overhead; no practical wall-clock speedup occurs at N=100."
+        },
+        "memory": {
+          "measured_peak_incremental_bytes": 242248,
+          "measured_peak_incremental_mb": 0.231
+        },
+        "validation": {
+          "is_finite": true,
+          "min_diagonal_entry": 0.6225264902732439,
+          "max_diagonal_entry": 1.0022024068430402
+        }
+      },
+      "m_100": {
+        "landmark_budget": 100,
+        "is_full_landmark_boundary": true,
+        "landmark_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          74,
+          75,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84,
+          85,
+          86,
+          87,
+          88,
+          89,
+          90,
+          91,
+          92,
+          93,
+          94,
+          95,
+          96,
+          97,
+          98,
+          99
+        ],
+        "matrix_dimensions": {
+          "C_shape": [
+            100,
+            100
+          ],
+          "W_shape": [
+            100,
+            100
+          ],
+          "K_hat_shape": [
+            100,
+            100
+          ]
+        },
+        "conditioning": {
+          "min_eigenvalue_W": -1.3853754229778518e-14,
+          "max_eigenvalue_W": 62.871781928162804,
+          "condition_number_W": Infinity,
+          "pseudoinverse_method": "np.linalg.pinv",
+          "rcond_tolerance": 1e-15,
+          "regularization_added": null
+        },
+        "approximation_errors": {
+          "relative_frobenius_error": 0.002013,
+          "relative_spectral_error": 0.00211,
+          "absolute_frobenius_error": 0.13325,
+          "absolute_spectral_error": 0.132685
+        },
+        "timing": {
+          "landmark_selection_time_s": 2.1e-05,
+          "kernel_evaluation_time_s": 0.000588,
+          "pseudoinverse_time_s": 0.00702,
+          "matrix_multiplication_time_s": 0.000339,
+          "total_end_to_end_reconstruction_time_s": 0.007968,
+          "error_validation_time_s": 0.001171,
+          "reference_exact_time_s": 0.001677,
+          "measured_speedup_ratio": 0.2105,
+          "speedup_interpretation": "At N=100 samples, Nystr\u00f6m total end-to-end time is 7.97 ms vs 1.68 ms for full kernel (speedup 0.21x). At small sample sizes, SVD pseudoinverse and matrix allocations introduce overhead; no practical wall-clock speedup occurs at N=100."
+        },
+        "memory": {
+          "measured_peak_incremental_bytes": 842248,
+          "measured_peak_incremental_mb": 0.8032
+        },
+        "validation": {
+          "is_finite": true,
+          "min_diagonal_entry": 0.9946611182552954,
+          "max_diagonal_entry": 1.005593598348476
+        }
+      }
+    }
+  }
+}
